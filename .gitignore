@@ -1,0 +1,41 @@
+# Python & Byte-compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Django specific
+*.log
+local_settings.py
+media/
+staticfiles/
+
+# Environments & Virtualenv
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE & Code Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Testing & Coverage
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+
+# Agent & Temp directories
+scratch/
+.system_generated/

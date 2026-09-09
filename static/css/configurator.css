@@ -1,0 +1,222 @@
+/* ==========================================================================
+   AETHER JEWELS • CELESTIAL ATELIER – BESPOKE CONFIGURATOR STYLES
+   ========================================================================== */
+
+.configurator-suite {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 3rem;
+  background: rgba(13, 14, 20, 0.85);
+  backdrop-filter: blur(15px);
+  border: 1px solid var(--gold-border, rgba(212, 175, 55, 0.25));
+  border-radius: var(--radius-sm, 6px);
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.85), 0 0 40px rgba(212, 175, 55, 0.1);
+  margin-bottom: 4rem;
+}
+
+/* 3D Simulation Stage Left */
+.config-stage-pane {
+  position: relative;
+  background: radial-gradient(circle at 50% 50%, #161826 0%, #090A0E 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  min-height: 540px;
+  overflow: hidden;
+  border-right: 1px solid var(--gold-border, rgba(212, 175, 55, 0.25));
+}
+
+#gemstone-canvas {
+  width: 360px;
+  height: 360px;
+  filter: drop-shadow(0 25px 50px rgba(0, 0, 0, 0.95));
+  cursor: grab;
+  touch-action: none;
+}
+
+#gemstone-canvas:active {
+  cursor: grabbing;
+}
+
+.stage-light-halo {
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.stage-top-badge {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+}
+
+.stage-controls-hint {
+  position: absolute;
+  bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--gold-champagne, #E8D390);
+  opacity: 0.85;
+}
+
+/* Controls Panel Right */
+.config-controls-pane {
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow-y: auto;
+  max-height: 720px;
+}
+
+.config-section-title {
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--gold-light, #F4E5B8);
+  margin-bottom: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.config-options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.75rem;
+}
+
+.config-option-card {
+  padding: 0.85rem 1rem;
+  background: rgba(22, 24, 38, 0.6);
+  border: 1px solid rgba(212, 175, 55, 0.18);
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.25s ease;
+  position: relative;
+  user-select: none;
+}
+
+.config-option-card:hover,
+.config-option-card.active {
+  border-color: var(--gold-primary, #D4AF37);
+  background: rgba(212, 175, 55, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), 0 0 10px rgba(212, 175, 55, 0.2);
+}
+
+.config-option-card .option-icon {
+  font-size: 1.2rem;
+  color: var(--gold-champagne, #E8D390);
+  margin-bottom: 0.35rem;
+  display: block;
+}
+
+.config-option-card .option-name {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #EDE8DF;
+  display: block;
+}
+
+/* Carat Range Slider */
+.carat-slider-container {
+  margin-bottom: 2rem;
+  padding: 1.25rem;
+  background: rgba(22, 24, 38, 0.6);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  border-radius: 4px;
+}
+
+.carat-val-display {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.4rem;
+  color: var(--gold-light, #F4E5B8);
+}
+
+.luxury-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: #2A2D3E;
+  outline: none;
+  margin-top: 1rem;
+}
+
+.luxury-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--gold-primary, #D4AF37);
+  cursor: pointer;
+  box-shadow: 0 0 10px var(--gold-primary, #D4AF37);
+  border: 2px solid #FFF;
+}
+
+.luxury-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--gold-primary, #D4AF37);
+  cursor: pointer;
+  box-shadow: 0 0 10px var(--gold-primary, #D4AF37);
+  border: 2px solid #FFF;
+}
+
+/* Live Valuation Bar */
+.config-valuation-box {
+  background: rgba(18, 19, 28, 0.95);
+  border: 1px solid var(--gold-primary, #D4AF37);
+  padding: 1.5rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(212, 175, 55, 0.15);
+}
+
+.valuation-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #9A9AA6;
+}
+
+.valuation-amount {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #FFF6D6;
+}
+
+@media (max-width: 991px) {
+  .configurator-suite {
+    grid-template-columns: 1fr;
+  }
+  .config-stage-pane {
+    border-right: none;
+    border-bottom: 1px solid var(--gold-border, rgba(212, 175, 55, 0.25));
+    min-height: 420px;
+  }
+  #gemstone-canvas {
+    width: 280px;
+    height: 280px;
+  }
+}

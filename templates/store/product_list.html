@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load aether_tags %}
+
+{% block title %}
+{% if selected_category %}{{ selected_category.name }} | {% elif query %}Search: {{ query }} | {% endif %}Aether Jewels Fine Catalogue
+{% endblock %}
+
+{% block content %}
+<div class="py-4 bg-dark border-bottom border-secondary border-opacity-25">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-1 small">
+                <li class="breadcrumb-item"><a href="{% url 'store:home' %}" class="text-muted">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'store:product_list' %}" class="text-muted">High Jewellery</a></li>
+                {% if selected_category %}
+                <li class="breadcrumb-item active text-gold" aria-current="page">{{ selected_category.name }}</li>
+                {% elif query %}
+                <li class="breadcrumb-item active text-gold" aria-current="page">Search: "{{ query }}"</li>
+                {% else %}
+                <li class="breadcrumb-item active text-gold" aria-current="page">All Collections</li>
+                {% endif %}
+            </ol>
+        </nav>
+        <h1 class="font-heading fs-2 text-white mb-0">
+            {% if selected_category %}{{ selected_category.name }}{% elif query %}Search Results for "{{ query }}"{% else %}The Complete Celestial Collection{% endif %}
+        </h1>
+        <p class="text-secondary small mb-0 mt-1">Showing {{ total_count }} handcrafted fine jewellery pieces</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row g-4">
+        <!-- Filter Sidebar -->
+        <div class="col-lg-3">
+            <div class="glass-card p-4 sticky-top" style="top: 90px; z-index: 10;">
+                <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom border-secondary">
+                    <h5 class="text-white mb-0 fs-6 text-uppercase" style="letter-spacing: 1px;"><i class="bi bi-sliders text-gold me-2"></i>Filter Atelier</h5>
+                    <a href="{% url 'store:product_list' %}" class="small text-gold text-decoration-none">Reset All</a>
+                </div>
+
+                <form action="{% url 'store:product_list' %}" method="GET" id="filterForm">
+                    {% if query %}
+                    <input type="hidden" name="q" value="{{ query }}">
+                    {% endif %}
+
+                    <!-- Categories -->
+                    <div class="mb-4">
+                        <label class="form-label text-gold small fw-bold text-uppercase" style="letter-spacing: 1px;">Categories</label>
+                        <div class="d-flex flex-column gap-2">
+                            <div class="form-check">
+                                <input class="form-check-input bg-dark border-secondary" type="radio" name="category" id="cat_all" value="" {% if not selected_category %}checked{% endif %} onchange="document.getElementById('filterForm').submit();">
+                                <label class="form-check-label text-secondary small" for="cat_all">All Categories</label>
+                            </div>
+                            {% for cat in categories %}
+                            <div class="form-check">
+                                <input class="form-check-input bg-dark border-secondary" type="radio" name="category" id="cat_{{ cat.slug }}" value="{{ cat.slug }}" {% if selected_category.slug == cat.slug %}checked{% endif %} onchange="document.getElementById('filterForm').submit();">
+                                <label class="form-check-label text-secondary small" for="cat_{{ cat.slug }}">{{ cat.name }}</label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Price Range -->
+                    <div class="mb-4">
+                        <label class="form-label text-gold small fw-bold text-uppercase" style="letter-spacing: 1px;">Price Range (₹ INR)</label>
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <input type="number" name="min_price" class="form-control form-control-sm luxury-input" placeholder="Min ₹" value="{{ min_price|default:'' }}">
+                            </div>
+                            <div class="col-6">
+                                <input type="number" name="max_price" class="form-control form-control-sm luxury-input" placeholder="Max ₹" value="{{ max_price|default:'' }}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Metal Karat -->
+                    <div class="mb-4">
+                        <label class="form-label text-gold small fw-bold text-uppercase" style="letter-spacing: 1px;">Precious Metal</label>
+                        <select name="metal" class="form-select form-select-sm luxury-input" onchange="document.getElementById('filterForm').submit();">
+                            <option value="">All Metals</option>
+                            {% for m_val, m_label in available_metals %}
+                            <option value="{{ m_val }}" {% if selected_metal == m_val %}selected{% endif %}>{{ m_label }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Gemstone -->
+                    <div class="mb-4">
+                        <label class="form-label text-gold small fw-bold text-uppercase" style="letter-spacing: 1px;">Gemstone</label>
+                        <select name="gemstone" class="form-select form-select-sm luxury-input" onchange="document.getElementById('filterForm').submit();">
+                            <option value="">All Gemstones</option>
+                            {% for g_val, g_label in available_gemstones %}
+                            <option value="{{ g_val }}" {% if selected_gemstone == g_val %}selected{% endif %}>{{ g_label }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-gold w-100 btn-sm">Apply Filters</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Product Grid & Sort Controls -->
+        <div class="col-lg-9">
+            <!-- Top Controls -->
+            <div class="glass-card p-3 mb-4 d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
+                <div class="small text-secondary">
+                    Showing <strong class="text-white">{{ products.count }}</strong> of {{ total_count }} masterpieces
+                </div>
+
+                <div class="d-flex align-items-center gap-2">
+                    <label class="small text-muted text-nowrap">Sort By:</label>
+                    <select class="form-select form-select-sm luxury-input" style="width: 200px;" onchange="const form = document.getElementById('filterForm'); const sInput = document.createElement('input'); sInput.type = 'hidden'; sInput.name = 'sort'; sInput.value = this.value; form.appendChild(sInput); form.submit();">
+                        <option value="featured" {% if selected_sort == 'featured' %}selected{% endif %}>Featured Haute Selection</option>
+                        <option value="price_low" {% if selected_sort == 'price_low' %}selected{% endif %}>Price: Low to High (₹)</option>
+                        <option value="price_high" {% if selected_sort == 'price_high' %}selected{% endif %}>Price: High to Low (₹)</option>
+                        <option value="newest" {% if selected_sort == 'newest' %}selected{% endif %}>New Celestial Arrivals</option>
+                        <option value="rating" {% if selected_sort == 'rating' %}selected{% endif %}>Highest Rated</option>
+                        <option value="popular" {% if selected_sort == 'popular' %}selected{% endif %}>Most Celebrated</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Product Grid -->
+            {% if products %}
+            <div class="row g-4">
+                {% for product in products %}
+                <div class="col-md-4 col-sm-6">
+                    <div class="card-3d-wrap">
+                        <div class="product-card-3d">
+                            <div class="card-glare"></div>
+                            <div class="product-img-wrapper">
+                                <a href="{{ product.get_absolute_url }}">
+                                    <img src="{{ product.image_url }}" alt="{{ product.name }}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800&q=80';">
+                                </a>
+                                <div class="product-badge-group">
+                                    {% if product.is_bestseller %}
+                                    <span class="badge-aether badge-bestseller">Bestseller</span>
+                                    {% elif product.is_new_arrival %}
+                                    <span class="badge-aether badge-new">New Arrival</span>
+                                    {% endif %}
+                                    {% if product.discount_percent > 0 %}
+                                    <span class="badge-aether badge-gold">{{ product.discount_percent }}% Off</span>
+                                    {% endif %}
+                                </div>
+                                <button class="wishlist-btn-corner wishlist-toggle-btn {% if product.id in user_wishlist_ids %}active{% endif %}" data-product-id="{{ product.id }}" title="Wishlist">
+                                    <i class="bi {% if product.id in user_wishlist_ids %}bi-heart-fill text-danger{% else %}bi-heart{% endif %}"></i>
+                                </button>
+                                <!-- 3D Floating Action Pills -->
+                                <div class="card-3d-actions">
+                                    <button type="button" class="btn btn-3d-pill card-quickview-btn" data-product-id="{{ product.id }}">
+                                        <i class="bi bi-eye me-1"></i> Quick View
+                                    </button>
+                                    <button type="button" class="btn btn-3d-pill" data-bs-toggle="modal" data-bs-target="#diamond3DModal">
+                                        <i class="bi bi-badge-3d me-1"></i> 3D Inspect
+                                    </button>
+                                </div>
+                            </div>
+
+
+                            <div class="product-card-body">
+                                <div class="product-category-sub">{{ product.category.name }}</div>
+                                <h4 class="product-card-title">
+                                    <a href="{{ product.get_absolute_url }}" class="text-white text-decoration-none">{{ product.name }}</a>
+                                </h4>
+                                <div class="product-card-specs">
+                                    <span>{{ product.metal_karat }}</span> • <span>{{ product.gemstone_type }}</span>
+                                </div>
+
+                                <div class="d-flex align-items-baseline justify-content-between mt-auto pt-3 border-top border-dark">
+                                    <div>
+                                        <span class="product-card-price">{{ product.price|inr }}</span>
+                                        {% if product.original_price %}
+                                        <span class="product-card-original-price">{{ product.original_price|inr }}</span>
+                                        {% endif %}
+                                    </div>
+                                    <form action="{% url 'cart:add_to_cart' product.id %}" method="POST">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="quantity" value="1">
+                                        <button type="submit" class="btn btn-sm btn-outline-warning border-secondary text-gold" title="Quick Add">
+                                            <i class="bi bi-bag-plus"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="glass-card p-5 text-center my-5">
+                <i class="bi bi-gem text-gold fs-1 mb-3 d-block"></i>
+                <h3 class="text-white">No Jewellery Pieces Found</h3>
+                <p class="text-muted">No items match your active search or filter selection. Try adjusting or clearing your filters.</p>
+                <a href="{% url 'store:product_list' %}" class="btn btn-gold-outline mt-2">View Full Collection</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

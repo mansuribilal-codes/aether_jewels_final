@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Request Received | Aether Jewels Concierge{% endblock %}
+
+{% block content %}
+<div class="container py-5 my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7 text-center">
+            <div class="glass-card p-4 p-md-5" style="border-color: var(--gold-primary);">
+                <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-4" style="width: 80px; height: 80px; background: rgba(212, 175, 55, 0.15); border: 2px solid var(--gold-primary);">
+                    <i class="bi bi-patch-check-fill text-gold fs-1"></i>
+                </div>
+
+                <span class="section-subtitle">Sovereign Concierge Acknowledgment</span>
+                <h1 class="font-heading fs-2 text-white mb-3">
+                    {% if booking_type == 'appointment' %}
+                    Your Private Appointment is Requested
+                    {% else %}
+                    Bespoke Commission Brief Received
+                    {% endif %}
+                </h1>
+
+                <p class="text-secondary mb-4 lead font-serif-sub">
+                    Thank you for entrusting your fine jewellery aspirations to Aether Jewels. Our Senior Client Director will reach out to you within two business hours to confirm exact preparations.
+                </p>
+
+                {% if booking %}
+                <div class="p-3 rounded bg-dark border border-secondary mb-4 text-start small">
+                    <div class="text-gold fw-bold mb-2">Request Details:</div>
+                    <div class="text-secondary">Name: <strong class="text-white">{{ booking.name }}</strong></div>
+                    <div class="text-secondary">Contact: <strong class="text-white">{{ booking.phone }}</strong> • {{ booking.email }}</div>
+                    {% if booking_type == 'appointment' %}
+                    <div class="text-secondary">Salon / Mode: <strong class="text-white">{{ booking.get_consultation_type_display }}</strong></div>
+                    <div class="text-secondary">Preferred Date & Slot: <strong class="text-white">{{ booking.preferred_date }} ({{ booking.time_slot }})</strong></div>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="{% url 'store:product_list' %}" class="btn btn-gold">Explore Collections</a>
+                    <a href="{% url 'store:home' %}" class="btn btn-dark-subtle">Return to Maison</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

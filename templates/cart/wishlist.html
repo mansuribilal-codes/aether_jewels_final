@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load aether_tags %}
+
+{% block title %}Your Sovereign Wishlist | Aether Jewels{% endblock %}
+
+{% block content %}
+<div class="py-4 bg-dark border-bottom border-secondary border-opacity-25">
+    <div class="container">
+        <h1 class="font-heading fs-2 text-white mb-0">Sovereign Wishlist</h1>
+        <p class="text-secondary small mb-0 mt-1">Saved fine jewellery creations reserved in your celestial vault</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    {% if wishlist_items %}
+    <div class="row g-4">
+        {% for item in wishlist_items %}
+        <div class="col-lg-3 col-md-4 col-sm-6">
+            <div class="product-card">
+                <div class="product-img-wrapper">
+                    <a href="{{ item.product.get_absolute_url }}">
+                        <img src="{{ item.product.image_url }}" alt="{{ item.product.name }}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800&q=80';">
+                    </a>
+
+                    <a href="{% url 'cart:toggle_wishlist' item.product.id %}" class="wishlist-btn-corner active text-danger" title="Remove from Wishlist">
+                        <i class="bi bi-heart-fill"></i>
+                    </a>
+                </div>
+
+                <div class="product-card-body">
+                    <div class="product-category-sub">{{ item.product.category.name }}</div>
+                    <h4 class="product-card-title">
+                        <a href="{{ item.product.get_absolute_url }}" class="text-white text-decoration-none">{{ item.product.name }}</a>
+                    </h4>
+                    <div class="product-card-specs">
+                        <span>{{ item.product.metal_karat }}</span> • <span>{{ item.product.gemstone_type }}</span>
+                    </div>
+
+                    <div class="product-card-price mb-3">{{ item.product.price|inr }}</div>
+
+                    <div class="d-flex gap-2 mt-auto">
+                        <a href="{% url 'cart:move_wishlist_to_cart' item.product.id %}" class="btn btn-gold btn-sm w-100">
+                            <i class="bi bi-bag-plus me-1"></i> Move to Bag
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="glass-card p-5 text-center my-5">
+        <i class="bi bi-heart text-gold fs-1 mb-3 d-block"></i>
+        <h3 class="text-white mb-2">Your Wishlist is Empty</h3>
+        <p class="text-muted mb-4">Click the heart icon on any jewellery piece to save it to your sovereign wishlist.</p>
+        <a href="{% url 'store:product_list' %}" class="btn btn-gold">Discover Collections</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

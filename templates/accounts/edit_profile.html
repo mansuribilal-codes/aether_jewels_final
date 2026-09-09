@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Edit VIP Profile & Address | Aether Jewels{% endblock %}
+
+{% block content %}
+<div class="container py-5 my-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="glass-card p-4 p-md-5">
+                <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom border-secondary">
+                    <div>
+                        <span class="section-subtitle">VIP Credentials</span>
+                        <h2 class="font-heading fs-3 text-white mb-0">Edit Profile & Delivery Vault Address</h2>
+                    </div>
+                    <a href="{% url 'accounts:profile' %}" class="btn btn-dark-subtle btn-sm">Cancel</a>
+                </div>
+
+                <form method="POST" action="{% url 'accounts:edit_profile' %}">
+                    {% csrf_token %}
+
+                    <h5 class="text-gold fs-6 text-uppercase mb-3" style="letter-spacing: 1px;">01. Personal Information</h5>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">First Name <span class="text-danger">*</span></label>
+                            {{ form.first_name }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">Last Name <span class="text-danger">*</span></label>
+                            {{ form.last_name }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">Email Address <span class="text-danger">*</span></label>
+                            {{ form.email }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">Primary Mobile Phone (+91)</label>
+                            {{ form.phone_number }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">Alternate Phone</label>
+                            {{ form.alternate_phone }}
+                        </div>
+                    </div>
+
+                    <h5 class="text-gold fs-6 text-uppercase mb-3" style="letter-spacing: 1px;">02. Default Armored Transit Vault Address</h5>
+                    <div class="row g-3 mb-4">
+                        <div class="col-12">
+                            <label class="form-label text-secondary small">Address Line 1 (House/Suite/Building)</label>
+                            {{ form.address_line1 }}
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label text-secondary small">Address Line 2 (Area, Street)</label>
+                            {{ form.address_line2 }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">Landmark</label>
+                            {{ form.landmark }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">City</label>
+                            {{ form.city }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">State</label>
+                            {{ form.state }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">6-Digit Indian Pincode</label>
+                            {{ form.pincode }}
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-gold py-2 px-4">
+                        <i class="bi bi-check2-circle me-1"></i> Save Changes
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

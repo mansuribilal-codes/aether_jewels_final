@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Certification, Hallmarking & Armored Transit FAQ | Aether Jewels{% endblock %}
+
+{% block content %}
+<div class="py-5 bg-black border-bottom border-secondary border-opacity-25">
+    <div class="container text-center">
+        <span class="section-subtitle"><i class="bi bi-stars me-1"></i> Sovereign Client Knowledge</span>
+        <h1 class="font-heading display-5 text-white mb-2">Frequently Asked Questions</h1>
+        <p class="text-secondary lead font-serif-sub mx-auto" style="max-width: 700px;">
+            Important details on Bureau of Indian Standards (BIS) Hallmarking, diamond certificates, discreet armored logistics, and bespoke policies.
+        </p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+            <div class="accordion accordion-flush glass-card p-4" id="aetherFaqAccordion">
+                <!-- FAQ 1 -->
+                <div class="accordion-item bg-transparent border-bottom border-secondary border-opacity-50">
+                    <h2 class="accordion-header" id="faqHeading1">
+                        <button class="accordion-button bg-transparent text-white fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1" aria-expanded="false" aria-controls="faqCollapse1">
+                            Are all Aether Jewels creations 100% BIS Hallmarked?
+                        </button>
+                    </h2>
+                    <div id="faqCollapse1" class="accordion-collapse collapse" aria-labelledby="faqHeading1" data-bs-parent="#aetherFaqAccordion">
+                        <div class="accordion-body text-secondary small" style="line-height: 1.8;">
+                            Yes. In compliance with the Ministry of Consumer Affairs, Government of India regulations, every single piece in 18K and 22K gold carries the official BIS Hallmark with the unique HUID (Hallmark Unique Identification) laser inscription verifying purity.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 2 -->
+                <div class="accordion-item bg-transparent border-bottom border-secondary border-opacity-50">
+                    <h2 class="accordion-header" id="faqHeading2">
+                        <button class="accordion-button bg-transparent text-white fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2" aria-expanded="false" aria-controls="faqCollapse2">
+                            What diamond and gemstone certifications are provided?
+                        </button>
+                    </h2>
+                    <div id="faqCollapse2" class="accordion-collapse collapse" aria-labelledby="faqHeading2" data-bs-parent="#aetherFaqAccordion">
+                        <div class="accordion-body text-secondary small" style="line-height: 1.8;">
+                            All solitaires and diamonds above 0.30 carats come with an individual authentic Gemological Institute of America (GIA) or International Gemological Institute (IGI) grading dossier. Our colored gemstones (Burmese Rubies, Zambian Emeralds, Ceylon Sapphires) carry GRS / Gubelin reports confirming natural earth-origin without synthetic treatment.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 3 -->
+                <div class="accordion-item bg-transparent border-bottom border-secondary border-opacity-50">
+                    <h2 class="accordion-header" id="faqHeading3">
+                        <button class="accordion-button bg-transparent text-white fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3" aria-expanded="false" aria-controls="faqCollapse3">
+                            How does White-Glove Armored Courier Delivery operate?
+                        </button>
+                    </h2>
+                    <div id="faqCollapse3" class="accordion-collapse collapse" aria-labelledby="faqHeading3" data-bs-parent="#aetherFaqAccordion">
+                        <div class="accordion-body text-secondary small" style="line-height: 1.8;">
+                            All orders are packed in tamper-proof discreet packaging (no brand markings on external boxes for total confidentiality) and dispatched via dedicated high-value armored logistics partners (BlueDart Apex / BVC Logistics). Every parcel is 100% insured until signed for via a secure mobile OTP at your doorstep.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 4 -->
+                <div class="accordion-item bg-transparent border-bottom border-secondary border-opacity-50">
+                    <h2 class="accordion-header" id="faqHeading4">
+                        <button class="accordion-button bg-transparent text-white fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse4" aria-expanded="false" aria-controls="faqCollapse4">
+                            What is your return and exchange policy?
+                        </button>
+                    </h2>
+                    <div id="faqCollapse4" class="accordion-collapse collapse" aria-labelledby="faqHeading4" data-bs-parent="#aetherFaqAccordion">
+                        <div class="accordion-body text-secondary small" style="line-height: 1.8;">
+                            We offer a 30-Day Complimentary Sovereign Return & Exchange privilege on all non-customized pieces in original condition with security tags intact. We also offer a lifetime exchange policy at prevailing bullion rates and diamond index values.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 5 -->
+                <div class="accordion-item bg-transparent">
+                    <h2 class="accordion-header" id="faqHeading5">
+                        <button class="accordion-button bg-transparent text-white fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse5" aria-expanded="false" aria-controls="faqCollapse5">
+                            How do I customize my ring size or order a bespoke design?
+                        </button>
+                    </h2>
+                    <div id="faqCollapse5" class="accordion-collapse collapse" aria-labelledby="faqHeading5" data-bs-parent="#aetherFaqAccordion">
+                        <div class="accordion-body text-secondary small" style="line-height: 1.8;">
+                            You may select your preferred size directly from the product page dropdown or specify it during checkout. For entirely custom pieces, visit our <a href="{% url 'consultations:bespoke' %}" class="text-gold">Bespoke Atelier</a> page to submit your concept, and our master designers will create 3D renders.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

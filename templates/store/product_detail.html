@@ -1,0 +1,363 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load aether_tags %}
+
+{% block title %}{{ product.name }} ({{ product.sku }}) | Aether Jewels{% endblock %}
+
+{% block content %}
+<div class="py-3 bg-dark border-bottom border-secondary border-opacity-25">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0 small">
+                <li class="breadcrumb-item"><a href="{% url 'store:home' %}" class="text-muted">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'store:product_list' %}" class="text-muted">Catalogue</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'store:product_list' %}?category={{ product.category.slug }}" class="text-muted">{{ product.category.name }}</a></li>
+                <li class="breadcrumb-item active text-gold" aria-current="page">{{ product.name }}</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<!-- Hidden Marker for Recently Viewed JavaScript Tracker -->
+<div id="product-detail-marker" class="d-none" data-id="{{ product.id }}" data-name="{{ product.name }}"
+    data-price="{{ product.price|inr }}" data-image="{{ product.image_url }}"
+    data-category="{{ product.category.name }}"></div>
+
+<div class="container py-5">
+    <div class="row g-5">
+        <!-- Left: Image Gallery -->
+        <div class="col-lg-7">
+            <div class="glass-card p-3 p-md-4 mb-3">
+                <div class="position-relative overflow-hidden rounded" style="background: #08080c; max-height: 580px;">
+                    <img id="mainProductImage" src="{{ product.image_url }}" alt="{{ product.name }}"
+                        class="img-fluid w-100"
+                        style="object-fit: cover; max-height: 560px; transition: opacity 0.25s ease;"
+                        onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800&q=80';">
+                    <div class="product-badge-group">
+                        {% if product.is_bestseller %}
+                        <span class="badge-aether badge-bestseller">Bestseller</span>
+                        {% elif product.is_new_arrival %}
+                        <span class="badge-aether badge-new">New Arrival</span>
+                        {% endif %}
+                        {% if product.discount_percent > 0 %}
+                        <span class="badge-aether badge-gold">{{ product.discount_percent }}% Privilege</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gallery Thumbnails -->
+            <div class="d-flex gap-3 overflow-auto pb-2">
+                {% for img in product.images_list %}
+                <div class="gallery-thumb-item rounded overflow-hidden cursor-pointer {% if forloop.first %}active{% endif %}"
+                    data-img-src="{{ img }}"
+                    style="width: 85px; height: 85px; flex-shrink: 0; border: 2px solid {% if forloop.first %}var(--gold-primary){% else %}rgba(255,255,255,0.1){% endif %}; cursor: pointer;">
+                    <img src="{{ img }}" alt="Thumbnail {{ forloop.counter }}" class="w-100 h-100"
+                        style="object-fit: cover;"
+                        onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800&q=80';">
+                </div>
+                {% endfor %}
+            </div>
+
+
+            <!-- 3D Optical Inspector Quick Trigger -->
+            <div class="mt-3">
+                <button type="button"
+                    class="btn btn-dark-subtle w-100 text-gold border-warning border-opacity-50 py-2 d-flex align-items-center justify-content-center gap-2"
+                    data-bs-toggle="modal" data-bs-target="#diamond3DModal">
+                    <i class="bi bi-badge-3d fs-5 text-warning"></i>
+                    <span class="fw-semibold small text-uppercase" style="letter-spacing: 1px;">Launch 3D Celestial Gemstone & Facet Inspector</span>
+                </button>
+            </div>
+
+            <!-- Certified Guarantee Box -->
+            <div class="glass-card p-4 mt-4">
+                <div class="row g-3 text-center">
+                    <div class="col-4 border-end border-secondary">
+                        <i class="bi bi-patch-check-fill text-gold fs-3 d-block mb-1"></i>
+                        <div class="text-white small fw-bold">BIS Hallmarked</div>
+                        <div class="text-muted" style="font-size: 11px;">Govt. Purity Assurance</div>
+                    </div>
+                    <div class="col-4 border-end border-secondary">
+                        <i class="bi bi-award-fill text-gold fs-3 d-block mb-1"></i>
+                        <div class="text-white small fw-bold">IGI / GIA Report</div>
+                        <div class="text-muted" style="font-size: 11px;">100% Certified Diamonds</div>
+                    </div>
+                    <div class="col-4">
+                        <i class="bi bi-truck text-gold fs-3 d-block mb-1"></i>
+                        <div class="text-white small fw-bold">Armored Transit</div>
+                        <div class="text-muted" style="font-size: 11px;">100% Insured Delivery</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Details & Purchase -->
+        <div class="col-lg-5">
+            <div class="ps-lg-3">
+                <div class="product-category-sub mb-1">{{ product.category.name }} • SKU: {{ product.sku }}</div>
+                <h1 class="font-heading fs-2 text-white mb-2">{{ product.name }}</h1>
+                <p class="text-gold small mb-3 font-serif-sub fs-6 fst-italic">{{ product.tagline }}</p>
+
+                <!-- Rating -->
+                <div class="d-flex align-items-center gap-2 mb-4 pb-3 border-bottom border-secondary border-opacity-25">
+                    <div class="text-warning small">
+                        {% for i in product.rating|floatformat:0|times %}
+                        <i class="bi bi-star-fill text-warning"></i>
+                        {% endfor %}
+                    </div>
+                    <span class="text-white small fw-bold">{{ product.rating }}</span>
+                    <span class="text-muted small">({{ product.reviews_count }} verified reviews)</span>
+                </div>
+
+                <!-- Price Section -->
+                <div class="mb-4">
+                    <div class="d-flex align-items-baseline gap-3">
+                        <span class="fs-2 fw-bold text-gold-gradient">{{ product.price|inr }}</span>
+                        {% if product.original_price %}
+                        <span class="text-muted text-decoration-line-through fs-5">{{ product.original_price|inr }}</span>
+                        <span class="badge bg-danger">Save {{ product.discount_percent }}%</span>
+                        {% endif %}
+                    </div>
+                    <div class="text-muted small mt-1">Inclusive of all taxes & 3% Fine Jewellery GST. Complimentary insured shipping.</div>
+                </div>
+
+                <!-- Purchase Form -->
+                <form action="{% url 'cart:add_to_cart' product.id %}" method="POST" class="mb-4">
+                    {% csrf_token %}
+
+                    <!-- Size Selector if available -->
+                    {% if product.sizes_list %}
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label class="text-gold small fw-bold text-uppercase" style="letter-spacing: 1px;">Select Size / Dimension</label>
+                            <button type="button" class="btn btn-link p-0 small text-gold text-decoration-underline"
+                                data-bs-toggle="modal" data-bs-target="#sizeGuideModal" style="font-size: 12px;">
+                                <i class="bi bi-rulers me-1"></i> Size Guide
+                            </button>
+                        </div>
+                        <select name="size" class="form-select luxury-input" required>
+                            {% for size in product.sizes_list %}
+                            <option value="{{ size }}">{{ size }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% else %}
+                    <input type="hidden" name="size" value="Standard">
+                    {% endif %}
+
+
+                    <!-- Quantity & Add to Cart Action -->
+                    <div class="d-flex gap-3 mb-3">
+                        <div class="d-flex align-items-center bg-dark border border-secondary rounded px-2"
+                            style="width: 120px;">
+                            <button type="button" class="btn btn-sm text-light p-1 border-0"
+                                onclick="const q = document.getElementById('productQty'); if(parseInt(q.value)>1) q.value = parseInt(q.value)-1;"><i
+                                    class="bi bi-dash"></i></button>
+                            <input type="number" id="productQty" name="quantity" value="1" min="1"
+                                max="{{ product.stock }}"
+                                class="form-control form-control-sm bg-transparent border-0 text-center text-light fw-bold">
+                            <button type="button" class="btn btn-sm text-light p-1 border-0"
+                                onclick="const q = document.getElementById('productQty'); if(parseInt(q.value)<{{ product.stock }}) q.value = parseInt(q.value)+1;"><i
+                                    class="bi bi-plus"></i></button>
+                        </div>
+
+                        <button type="submit" class="btn btn-gold flex-grow-1">
+                            <i class="bi bi-bag-plus me-1"></i> Add to Celestial Bag
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Wishlist & Private Viewing Buttons -->
+                <div class="d-flex gap-3 mb-4">
+                    <button
+                        class="btn btn-gold-outline flex-grow-1 wishlist-toggle-btn {% if product.id in user_wishlist_ids %}active{% endif %}"
+                        data-product-id="{{ product.id }}">
+                        <i class="bi {% if product.id in user_wishlist_ids %}bi-heart-fill text-danger{% else %}bi-heart{% endif %} me-1"></i>
+                        <span>{% if product.id in user_wishlist_ids %}Saved in Wishlist{% else %}Add to Wishlist{% endif %}</span>
+                    </button>
+                    <a href="{% url 'consultations:book' %}?interest=Solitaires" class="btn btn-dark-subtle"
+                        title="Book Private Salon Viewing">
+                        <i class="bi bi-gem me-1"></i> Salon Viewing
+                    </a>
+                </div>
+
+                <!-- Indian PIN Code Delivery Checker -->
+                <div class="glass-card p-3 mb-4">
+                    <label class="text-gold small fw-bold text-uppercase d-block mb-2" style="letter-spacing: 1px;">
+                        <i class="bi bi-geo-alt me-1"></i> Check Indian PIN Code Delivery
+                    </label>
+                    <div class="input-group">
+                        <input type="text" id="pincodeInput" class="form-control form-control-sm luxury-input"
+                            placeholder="Enter 6-digit Pincode (e.g. 380001, 110001)">
+                        <button type="button" id="checkPincodeBtn" class="btn btn-gold btn-sm">Check</button>
+                    </div>
+                    <div id="pincodeResult" class="mt-2 small"></div>
+                </div>
+
+                <!-- Craftsmanship & Gemological Specs Table -->
+                <div class="glass-card p-4">
+                    <h5 class="text-white fs-6 text-uppercase mb-3 pb-2 border-bottom border-secondary"
+                        style="letter-spacing: 1px;">
+                        <i class="bi bi-gem text-gold me-2"></i>Gemological & Metal Specifications
+                    </h5>
+                    <table class="spec-table">
+                        <tbody>
+                            <tr>
+                                <td class="spec-name">Precious Metal</td>
+                                <td class="spec-val">{{ product.metal_karat }}</td>
+                            </tr>
+                            <tr>
+                                <td class="spec-name">Gross Weight</td>
+                                <td class="spec-val">{{ product.metal_weight_grams }} grams</td>
+                            </tr>
+                            <tr>
+                                <td class="spec-name">Primary Gemstone</td>
+                                <td class="spec-val">{{ product.gemstone_type }}</td>
+                            </tr>
+                            {% if product.diamond_carat %}
+                            <tr>
+                                <td class="spec-name">Diamond Carat</td>
+                                <td class="spec-val">{{ product.diamond_carat }} ct</td>
+                            </tr>
+                            {% endif %}
+                            <tr>
+                                <td class="spec-name">Clarity / Grade</td>
+                                <td class="spec-val">{{ product.diamond_clarity }}</td>
+                            </tr>
+                            <tr>
+                                <td class="spec-name">Diamond Cut</td>
+                                <td class="spec-val">{{ product.diamond_cut }}</td>
+                            </tr>
+                            <tr>
+                                <td class="spec-name">Certification</td>
+                                <td class="spec-val text-gold">{{ product.certification }}</td>
+                            </tr>
+                            <tr>
+                                <td class="spec-name">Dimensions</td>
+                                <td class="spec-val">{{ product.dimensions }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Narrative & Description -->
+    <div class="row mt-5">
+        <div class="col-lg-8">
+            <div class="glass-card p-4 p-md-5 mb-5">
+                <h3 class="font-heading text-white fs-4 mb-3">The Story & Craftsmanship</h3>
+                <p class="text-secondary lead font-serif-sub mb-4">{{ product.short_description }}</p>
+                <div class="text-secondary" style="line-height: 1.8;">
+                    {{ product.description|linebreaks }}
+                </div>
+            </div>
+
+            <!-- Customer Reviews Section -->
+            <div class="glass-card p-4 p-md-5">
+                <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom border-secondary">
+                    <div>
+                        <h3 class="font-heading text-white fs-4 mb-0">Valuation Reviews</h3>
+                        <div class="text-gold small mt-1">★ {{ product.rating }} out of 5 based on {{ product.reviews_count }} verified evaluations</div>
+                    </div>
+                </div>
+
+                <!-- Reviews List -->
+                <div class="d-flex flex-column gap-4 mb-5">
+                    {% for review in reviews %}
+                    <div class="p-3 rounded bg-dark border border-secondary border-opacity-25">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div class="fw-bold text-white">{{ review.title }}</div>
+                            <div class="text-warning small">
+                                {% for i in review.rating|times %}★{% endfor %}
+                            </div>
+                        </div>
+                        <p class="text-secondary small mb-2">{{ review.comment }}</p>
+                        <div class="d-flex align-items-center gap-2 text-muted" style="font-size: 11px;">
+                            <span>{{ review.user.first_name|default:review.user.username }}</span>
+                            <span>•</span>
+                            <span class="text-success"><i class="bi bi-patch-check-fill me-1"></i> Verified Sovereign Purchase</span>
+                            <span>•</span>
+                            <span>{{ review.created_at|date:"d M Y" }}</span>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted small">No written client reviews yet. Be the first sovereign collector to review this masterpiece.</p>
+                    {% endfor %}
+                </div>
+
+                <!-- Write a Review Form -->
+                {% if user.is_authenticated %}
+                <div class="p-4 rounded bg-dark border border-warning border-opacity-50">
+                    <h5 class="text-white fs-6 mb-3 text-uppercase" style="letter-spacing: 1px;"><i
+                            class="bi bi-pencil-square text-gold me-2"></i>Submit Your Appraisal Review</h5>
+                    <form action="{% url 'store:submit_review' product.id %}" method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label text-secondary small">Rating</label>
+                            {{ review_form.rating }}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-secondary small">Headline</label>
+                            {{ review_form.title }}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-secondary small">Your Review & Assessment</label>
+                            {{ review_form.comment }}
+                        </div>
+                        <button type="submit" class="btn btn-gold btn-sm">Post Valuation Review</button>
+                    </form>
+                </div>
+                {% else %}
+                <div class="p-3 text-center rounded bg-dark border border-secondary">
+                    <span class="text-muted small">Please <a href="{% url 'accounts:login' %}?next={{ request.path }}"
+                            class="text-gold">Sign In</a> to share your client appraisal.</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Related Products Sidebar -->
+        <div class="col-lg-4">
+            <h4 class="font-heading text-white fs-5 mb-4">Complementary Creations</h4>
+            <div class="d-flex flex-column gap-4">
+                {% for item in related_products %}
+                <div class="glass-card p-3 d-flex gap-3 align-items-center">
+                    <a href="{{ item.get_absolute_url }}" style="width: 80px; height: 80px; flex-shrink: 0;">
+                        <img src="{{ item.image_url }}" alt="{{ item.name }}" class="w-100 h-100 rounded"
+                            style="object-fit: cover;"
+                            onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800&q=80';">
+                    </a>
+                    <div class="overflow-hidden">
+                        <div class="product-category-sub" style="font-size: 10px;">{{ item.category.name }}</div>
+                        <h5 class="fs-6 text-white mb-1 text-truncate">
+                            <a href="{{ item.get_absolute_url }}" class="text-white text-decoration-none">{{ item.name }}</a>
+                        </h5>
+                        <div class="text-gold small fw-bold">{{ item.price|inr }}</div>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="text-muted small">No other creations in this category.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Recently Viewed Sovereign Pieces Section -->
+    <div id="recentlyViewedSection" class="mt-5 pt-4 border-top border-secondary border-opacity-25 d-none">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <span class="section-subtitle mb-0">Browsing History</span>
+                <h3 class="font-heading text-white fs-4 mb-0">Recently Admired Masterpieces</h3>
+            </div>
+            <a href="{% url 'store:product_list' %}" class="small text-gold text-decoration-none">Explore All</a>
+        </div>
+        <div id="recentlyViewedGrid" class="row g-4">
+            <!-- Populated via JavaScript -->
+        </div>
+    </div>
+</div>
+{% endblock %}

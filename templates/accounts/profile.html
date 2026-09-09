@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load aether_tags %}
+
+{% block title %}VIP Sovereign Portal | Aether Jewels{% endblock %}
+
+{% block content %}
+<div class="py-4 bg-dark border-bottom border-secondary border-opacity-25">
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+        <div>
+            <span class="badge-aether badge-gold mb-1">{{ profile.vip_tier }}</span>
+            <h1 class="font-heading fs-2 text-white mb-0">{{ user.get_full_name|default:user.username }}</h1>
+            <p class="text-secondary small mb-0 mt-1"><i class="bi bi-envelope text-gold me-1"></i> {{ user.email }} • <i class="bi bi-telephone text-gold ms-2 me-1"></i> {{ profile.phone_number|default:"Phone not provided" }}</p>
+        </div>
+        <div>
+            <a href="{% url 'accounts:edit_profile' %}" class="btn btn-gold-outline btn-sm">
+                <i class="bi bi-pencil-square me-1"></i> Edit Details & Vault Address
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <!-- VIP Metric Cards -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="glass-card p-4 text-center">
+                <div class="text-gold fs-2 mb-1"><i class="bi bi-gem"></i></div>
+                <div class="text-muted small text-uppercase" style="letter-spacing: 1px;">VIP Membership Tier</div>
+                <div class="text-white fs-5 fw-bold mt-1">{{ profile.vip_tier }}</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="glass-card p-4 text-center">
+                <div class="text-gold fs-2 mb-1"><i class="bi bi-box-seam"></i></div>
+                <div class="text-muted small text-uppercase" style="letter-spacing: 1px;">Vault Acquisitions</div>
+                <div class="text-white fs-5 fw-bold mt-1">{{ orders.count }} Orders</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="glass-card p-4 text-center">
+                <div class="text-gold fs-2 mb-1"><i class="bi bi-heart"></i></div>
+                <div class="text-muted small text-uppercase" style="letter-spacing: 1px;">Saved Wishlist</div>
+                <div class="text-white fs-5 fw-bold mt-1">{{ wishlist_items.count }} Pieces</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-5">
+        <!-- Recent Orders -->
+        <div class="col-lg-8">
+            <div class="glass-card p-4 mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom border-secondary">
+                    <h5 class="text-white fs-6 text-uppercase mb-0" style="letter-spacing: 1px;">
+                        <i class="bi bi-clock-history text-gold me-2"></i>Recent Vault Orders
+                    </h5>
+                    <a href="{% url 'orders:order_history' %}" class="small text-gold">View All History</a>
+                </div>
+
+                {% if orders %}
+                <div class="d-flex flex-column gap-3">
+                    {% for order in orders|slice:":4" %}
+                    <div class="p-3 rounded bg-dark border border-secondary border-opacity-50">
+                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-2">
+                            <div>
+                                <span class="text-white fw-bold">#{{ order.order_number }}</span>
+                                <span class="text-muted small ms-2">• {{ order.created_at|date:"d M Y" }}</span>
+                            </div>
+                            <div>
+                                <span class="badge bg-dark border border-warning text-gold small">{{ order.get_order_status_display }}</span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top border-secondary border-opacity-25">
+                            <div class="small text-muted">{{ order.items.count }} creation(s) • Tracking: <span class="text-light">{{ order.tracking_number }}</span></div>
+                            <div class="d-flex align-items-center gap-3">
+                                <span class="text-gold fw-bold">{{ order.grand_total|inr }}</span>
+                                <a href="{% url 'orders:order_detail' order.order_number %}" class="btn btn-sm btn-outline-secondary text-gold p-1" title="View Details"><i class="bi bi-chevron-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-muted small my-3">No active or past orders yet.</p>
+                {% endif %}
+            </div>
+
+            <!-- Wishlist Preview -->
+            <div class="glass-card p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom border-secondary">
+                    <h5 class="text-white fs-6 text-uppercase mb-0" style="letter-spacing: 1px;">
+                        <i class="bi bi-heart text-gold me-2"></i>Curated Wishlist
+                    </h5>
+                    <a href="{% url 'cart:wishlist' %}" class="small text-gold">Open Wishlist</a>
+                </div>
+
+                {% if wishlist_items %}
+                <div class="row g-3">
+                    {% for item in wishlist_items|slice:":4" %}
+                    <div class="col-sm-6">
+                        <div class="d-flex gap-3 align-items-center p-2 rounded bg-dark border border-secondary border-opacity-25">
+                            <img src="{{ item.product.image_url }}" alt="{{ item.product.name }}" class="rounded" style="width: 55px; height: 55px; object-fit: cover; border: 1px solid var(--gold-border);" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800&q=80';">
+                            <div class="overflow-hidden flex-grow-1">
+
+                                <a href="{{ item.product.get_absolute_url }}" class="text-white small fw-bold text-decoration-none text-truncate d-block">{{ item.product.name }}</a>
+                                <div class="text-gold small">{{ item.product.price|inr }}</div>
+                            </div>
+                            <a href="{% url 'cart:move_wishlist_to_cart' item.product.id %}" class="btn btn-sm btn-outline-warning text-gold p-1" title="Move to Bag"><i class="bi bi-bag-plus"></i></a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-muted small my-3">No saved creations in your wishlist.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Default Delivery Vault Address -->
+        <div class="col-lg-4">
+            <div class="glass-card p-4">
+                <h5 class="text-white fs-6 text-uppercase mb-3 pb-2 border-bottom border-secondary" style="letter-spacing: 1px;">
+                    <i class="bi bi-shield-check text-gold me-2"></i>Primary Delivery Vault
+                </h5>
+                {% if profile.address_line1 %}
+                <div class="small text-secondary mb-3">
+                    <div class="text-white fw-bold mb-1">{{ user.get_full_name|default:user.username }}</div>
+                    <div>{{ profile.address_line1 }}</div>
+                    {% if profile.address_line2 %}<div>{{ profile.address_line2 }}</div>{% endif %}
+                    {% if profile.landmark %}<div>Landmark: {{ profile.landmark }}</div>{% endif %}
+                    <div>{{ profile.city }}, {{ profile.state }} - {{ profile.pincode }}</div>
+                    <div class="mt-2"><i class="bi bi-telephone text-gold me-1"></i> {{ profile.phone_number }}</div>
+                </div>
+                {% else %}
+                <p class="text-muted small mb-3">No default address registered yet.</p>
+                {% endif %}
+
+                <a href="{% url 'accounts:edit_profile' %}" class="btn btn-gold-outline btn-sm w-100">
+                    Update Vault Address
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

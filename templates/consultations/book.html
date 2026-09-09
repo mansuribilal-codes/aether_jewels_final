@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Book Private VIP Consultation | Aether Jewels{% endblock %}
+
+{% block content %}
+<div class="py-5 bg-black border-bottom border-secondary border-opacity-25">
+    <div class="container text-center">
+        <span class="section-subtitle"><i class="bi bi-stars me-1"></i> Sovereign Concierge</span>
+        <h1 class="font-heading display-5 text-white mb-2">Book a Private VIP Consultation</h1>
+        <p class="text-secondary lead font-serif-sub mx-auto" style="max-width: 700px;">
+            Schedule a dedicated private session with our Senior Gemologists. Experience celestial solitaires, bespoke diamond matching, and personalized ring sizing in private luxury suites across Mumbai, Delhi, Bengaluru, Jaipur or via high-definition virtual appointment.
+        </p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row justify-content-center g-5">
+        <div class="col-lg-8">
+            <div class="glass-card p-4 p-md-5">
+                <form method="POST" action="{% url 'consultations:book' %}">
+                    {% csrf_token %}
+
+                    <h5 class="text-gold fs-6 text-uppercase mb-3 pb-2 border-bottom border-secondary" style="letter-spacing: 1px;">
+                        01. Client Details
+                    </h5>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">Your Full Name <span class="text-danger">*</span></label>
+                            {{ form.name }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">Email Address <span class="text-danger">*</span></label>
+                            {{ form.email }}
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label text-secondary small">Mobile Phone (+91) <span class="text-danger">*</span></label>
+                            {{ form.phone }}
+                        </div>
+                    </div>
+
+                    <h5 class="text-gold fs-6 text-uppercase mb-3 pb-2 border-bottom border-secondary" style="letter-spacing: 1px;">
+                        02. Salon Location & Preferred Timing
+                    </h5>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">Consultation Mode / Boutique <span class="text-danger">*</span></label>
+                            {{ form.consultation_type }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">Preferred Date <span class="text-danger">*</span></label>
+                            {{ form.preferred_date }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">Time Slot <span class="text-danger">*</span></label>
+                            {{ form.time_slot }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">Interest Category</label>
+                            {{ form.interest_category }}
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label text-secondary small">Expected Budget Range</label>
+                            {{ form.budget_range }}
+                        </div>
+                    </div>
+
+                    <h5 class="text-gold fs-6 text-uppercase mb-3 pb-2 border-bottom border-secondary" style="letter-spacing: 1px;">
+                        03. Specific Requirements or Gemstone Preferences
+                    </h5>
+                    <div class="mb-4">
+                        {{ form.notes }}
+                    </div>
+
+                    <button type="submit" class="btn btn-gold w-100 py-3 fs-6">
+                        <i class="bi bi-calendar-check-fill me-2"></i> Confirm Private VIP Consultation
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Right Side Salon Info -->
+        <div class="col-lg-4">
+            <div class="glass-card p-4 mb-4">
+                <h5 class="text-white fs-6 text-uppercase mb-3 pb-2 border-bottom border-secondary" style="letter-spacing: 1px;">
+                    <i class="bi bi-geo-alt-fill text-gold me-2"></i>Flagship Ateliers
+                </h5>
+
+                <div class="mb-3 pb-3 border-bottom border-secondary border-opacity-25 small text-secondary">
+                    <strong class="text-white d-block">Mumbai Flagship (Bandra West)</strong>
+                    Waterfield Road, Bandra West, Mumbai 400050<br>
+                    <span class="text-gold">Private Champagne Suite Available</span>
+                </div>
+
+                <div class="mb-3 pb-3 border-bottom border-secondary border-opacity-25 small text-secondary">
+                    <strong class="text-white d-block">Delhi DLF Emporio Boutique</strong>
+                    Nelson Mandela Marg, Vasant Kunj, New Delhi 110070<br>
+                    <span class="text-gold">Bridal & High Jewellery Salon</span>
+                </div>
+
+                <div class="mb-3 pb-3 border-bottom border-secondary border-opacity-25 small text-secondary">
+                    <strong class="text-white d-block">Bengaluru UB City Suite</strong>
+                    Vittal Mallya Road, Bengaluru 560001<br>
+                    <span class="text-gold">Solitaire & Investment Diamond Lounge</span>
+                </div>
+
+                <div class="small text-secondary">
+                    <strong class="text-white d-block">Virtual High-Definition Consultation</strong>
+                    Encrypted 4K Video Link sent upon confirmation with personal Gemologist.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

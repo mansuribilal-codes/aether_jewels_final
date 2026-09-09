@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Developer Dossier | Mohammed Bilal Mansuri – Full Stack Python / Django Developer{% endblock %}
+
+{% block meta_description %}Developer Profile of Mohammed Bilal Mansuri – Full Stack Python / Django Web Developer. Architectural Creator of Aether Jewels Haute Joaillerie E-Commerce Platform.{% endblock %}
+
+{% block content %}
+<section class="section-padding position-relative" style="background: radial-gradient(circle at 50% 20%, rgba(212, 175, 55, 0.08) 0%, transparent 60%);">
+    <div class="container py-4">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb" style="font-size: 13px;">
+                <li class="breadcrumb-item"><a href="{% url 'store:home' %}" class="text-gold text-decoration-none"><i class="bi bi-stars me-1"></i>Home</a></li>
+                <li class="breadcrumb-item active text-light" aria-current="page">Architect & Developer Dossier</li>
+            </ol>
+        </nav>
+
+        <!-- Developer Hero Card -->
+        <div class="developer-hero-card p-4 p-md-5 mb-5">
+            <div class="row g-5 align-items-center">
+                <!-- Avatar & Status -->
+                <div class="col-lg-4 text-center">
+                    <div class="developer-avatar-wrapper mb-4">
+                        <img src="https://sulead.in/static/img/Bilal_Mansuri.jpg" alt="Mohammed Bilal Mansuri" class="developer-avatar-img" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80';">
+                    </div>
+                    <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill" style="background: rgba(34, 197, 94, 0.12); border: 1px solid rgba(34, 197, 94, 0.3);">
+                        <span class="rounded-circle bg-success" style="width: 8px; height: 8px;"></span>
+                        <span class="text-success small fw-bold text-uppercase" style="letter-spacing: 1px; font-size: 11px;">Available for High-Impact Projects</span>
+                    </div>
+                </div>
+
+                <!-- Bio & Contact Info -->
+                <div class="col-lg-8">
+                    <span class="section-subtitle">ARCHITECT & LEAD SOFTWARE ENGINEER</span>
+                    <h1 class="text-white font-heading display-5 fw-bold mb-2">MOHAMMED BILAL MANSURI</h1>
+                    <p class="text-gold fs-5 mb-4" style="font-family: var(--font-serif-sub); font-style: italic;">
+                        Full Stack Web Developer (Python / Django)
+                    </p>
+
+                    <p class="text-secondary mb-4" style="line-height: 1.8; font-size: 15px;">
+                        Passionate Full-Stack Python & Django Developer specialized in architecting client-grade e-commerce platforms, complex relational databases, real-time 3D canvas rendering engines, and high-security transactional workflows. Dedicated to writing clean, maintainable, and high-performance code with refined user aesthetics.
+                    </p>
+
+                    <!-- Contact & Social Action Pills -->
+                    <div class="d-flex flex-wrap gap-2 mb-4">
+                        <a href="mailto:mansuribilal9792@gmail.com" class="developer-social-pill">
+                            <i class="bi bi-envelope-at text-gold"></i>
+                            <span>mansuribilal9792@gmail.com</span>
+                        </a>
+                        <a href="tel:+919723918213" class="developer-social-pill">
+                            <i class="bi bi-telephone text-gold"></i>
+                            <span>+91 97239 18213</span>
+                        </a>
+                        <a href="https://linkedin.com/in/mohammed-bilal-mansuri-972013204" target="_blank" class="developer-social-pill">
+                            <i class="bi bi-linkedin text-info"></i>
+                            <span>LinkedIn Profile</span>
+                        </a>
+                        <a href="https://github.com/mansuribilal-codes" target="_blank" class="developer-social-pill">
+                            <i class="bi bi-github text-light"></i>
+                            <span>GitHub Code Repository</span>
+                        </a>
+                        <a href="https://wa.me/919723918213?text=Hello%20Bilal%2C%20I%20reviewed%20your%20Aether%20Jewels%20project%20and%20would%20like%20to%20connect." target="_blank" class="developer-social-pill">
+                            <i class="bi bi-whatsapp text-success"></i>
+                            <span>WhatsApp Chat</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technical Mastery & Aether Jewels Architecture Highlights -->
+        <div class="row g-4 mb-5">
+            <!-- Core Stack Card -->
+            <div class="col-lg-4 col-md-6">
+                <div class="p-4 h-100 rounded" style="background: rgba(14, 15, 23, 0.7); border: 1px solid var(--gold-border);">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <div class="rounded-circle p-2" style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.3);">
+                            <i class="bi bi-braces text-gold fs-4"></i>
+                        </div>
+                        <h4 class="text-white font-heading fs-5 mb-0">Backend & APIs</h4>
+                    </div>
+                    <p class="text-secondary small mb-3">Engineered robust transactional architecture with Django 5, atomic checkouts, session merging, and REST APIs.</p>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="tech-badge-item">Python 3.12</span>
+                        <span class="tech-badge-item">Django 5.1</span>
+                        <span class="tech-badge-item">Django REST Framework</span>
+                        <span class="tech-badge-item">SQLite3 / PostgreSQL</span>
+                        <span class="tech-badge-item">Session-Cart Merge</span>
+                        <span class="tech-badge-item">GST Invoicing Engine</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Frontend Card -->
+            <div class="col-lg-4 col-md-6">
+                <div class="p-4 h-100 rounded" style="background: rgba(14, 15, 23, 0.7); border: 1px solid var(--gold-border);">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <div class="rounded-circle p-2" style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.3);">
+                            <i class="bi bi-palette text-gold fs-4"></i>
+                        </div>
+                        <h4 class="text-white font-heading fs-5 mb-0">Frontend & 3D WebGL</h4>
+                    </div>
+                    <p class="text-secondary small mb-3">Crafted dark celestial glassmorphism, Three.js 3D gemstone refraction, and GSAP micro-interactions.</p>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="tech-badge-item">Vanilla CSS & Glassmorphism</span>
+                        <span class="tech-badge-item">JavaScript ES6+</span>
+                        <span class="tech-badge-item">Three.js & OrbitControls</span>
+                        <span class="tech-badge-item">GSAP 3.12 & ScrollTrigger</span>
+                        <span class="tech-badge-item">HTML5 2D Canvas</span>
+                        <span class="tech-badge-item">Bootstrap 5 CDN</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Architecture & Production -->
+            <div class="col-lg-4 col-md-12">
+                <div class="p-4 h-100 rounded" style="background: rgba(14, 15, 23, 0.7); border: 1px solid var(--gold-border);">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <div class="rounded-circle p-2" style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.3);">
+                            <i class="bi bi-shield-check text-gold fs-4"></i>
+                        </div>
+                        <h4 class="text-white font-heading fs-5 mb-0">Production Excellence</h4>
+                    </div>
+                    <p class="text-secondary small mb-3">Implemented complete e-commerce security, Indian localization, BIS compliance, and automated test coverage.</p>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="tech-badge-item">Unit & E2E Testing</span>
+                        <span class="tech-badge-item">Atomic Transactions</span>
+                        <span class="tech-badge-item">Custom Template Filters</span>
+                        <span class="tech-badge-item">SEO & OpenGraph</span>
+                        <span class="tech-badge-item">WhiteNoise Static Asset Engine</span>
+                        <span class="tech-badge-item">Responsive Fluid Grid</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project Dossier Showcase -->
+        <div class="p-4 p-md-5 rounded border border-warning" style="background: rgba(10, 11, 16, 0.95); box-shadow: 0 0 35px rgba(212, 175, 55, 0.1);">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-8">
+                    <span class="badge-gold mb-2">FLAGSHIP PROJECT DOSSIER</span>
+                    <h3 class="text-white font-heading fs-3 mb-2">Aether Jewels – Celestial Haute Joaillerie Maison</h3>
+                    <p class="text-secondary small mb-0" style="line-height: 1.7;">
+                        A production-grade luxury e-commerce platform engineered from the ground up. Features real-time Indian gold bullion indices, interactive 3D diamond optical scintillation shader, dynamic bespoke configurator with live carat valuation, session-to-user shopping bag sync, coupon discount engine, 3% jewellery GST computation, printable tax invoices, and private salon scheduling.
+                    </p>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                    <a href="mailto:mansuribilal9792@gmail.com?subject=Project%20Inquiry%20from%20Aether%20Jewels" class="btn btn-gold px-4 py-2">
+                        <i class="bi bi-send me-1"></i> Hire / Contact Bilal
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

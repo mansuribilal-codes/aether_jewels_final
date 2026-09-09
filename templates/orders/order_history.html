@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load aether_tags %}
+
+{% block title %}Vault Orders History | Aether Jewels{% endblock %}
+
+{% block content %}
+<div class="py-4 bg-dark border-bottom border-secondary border-opacity-25">
+    <div class="container">
+        <h1 class="font-heading fs-2 text-white mb-0">Vault Acquisition Records</h1>
+        <p class="text-secondary small mb-0 mt-1">Track your past and active haute joaillerie acquisitions and shipments</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    {% if orders %}
+    <div class="d-flex flex-column gap-4">
+        {% for order in orders %}
+        <div class="glass-card p-4">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center pb-3 mb-3 border-bottom border-secondary gap-2">
+                <div>
+                    <span class="text-gold fw-bold fs-6">Order #{{ order.order_number }}</span>
+                    <span class="text-muted small ms-2">• Placed on {{ order.created_at|date:"d M Y" }}</span>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <span class="badge bg-dark border border-warning text-gold py-2 px-3 small">{{ order.get_order_status_display }}</span>
+                    <a href="{% url 'orders:order_detail' order.order_number %}" class="btn btn-gold-outline btn-sm">View Details</a>
+                    <a href="{% url 'orders:order_invoice' order.order_number %}" target="_blank" class="btn btn-dark-subtle btn-sm" title="Print Invoice"><i class="bi bi-printer"></i></a>
+                </div>
+            </div>
+
+            <div class="row align-items-center g-3">
+                <div class="col-md-8">
+                    <div class="d-flex flex-wrap gap-3">
+                        {% for item in order.items.all %}
+                        <div class="d-flex align-items-center gap-2">
+                            <img src="{{ item.product_image_url }}" alt="{{ item.product_name }}" class="rounded" style="width: 50px; height: 50px; object-fit: cover; border: 1px solid var(--gold-border);" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800&q=80';">
+                            <div>
+
+                                <div class="text-white small fw-semibold">{{ item.product_name }}</div>
+                                <div class="text-muted" style="font-size: 11px;">Qty: {{ item.quantity }} • Size: {{ item.selected_size }}</div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <div class="text-muted small">Total Valuation:</div>
+                    <div class="text-gold-gradient fw-bold fs-4">{{ order.grand_total|inr }}</div>
+                    <div class="text-muted small">Tracking: {{ order.tracking_number }}</div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="glass-card p-5 text-center my-5">
+        <i class="bi bi-box-seam text-gold fs-1 mb-3 d-block"></i>
+        <h3 class="text-white mb-2">No Past Orders Found</h3>
+        <p class="text-muted mb-4">You have not acquired any pieces yet. Explore our latest creations.</p>
+        <a href="{% url 'store:product_list' %}" class="btn btn-gold">Discover Collections</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

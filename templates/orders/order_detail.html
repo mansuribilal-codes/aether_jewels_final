@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load aether_tags %}
+
+{% block title %}Order #{{ order.order_number }} | Aether Jewels{% endblock %}
+
+{% block content %}
+<div class="py-4 bg-dark border-bottom border-secondary border-opacity-25">
+    <div class="container d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="font-heading fs-2 text-white mb-0">Order #{{ order.order_number }}</h1>
+            <p class="text-secondary small mb-0 mt-1">Placed on {{ order.created_at|date:"d M Y, H:i" }} IST</p>
+        </div>
+        <div>
+            <a href="{% url 'orders:order_invoice' order.order_number %}" target="_blank" class="btn btn-gold btn-sm">
+                <i class="bi bi-printer me-1"></i> Print Tax Invoice
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <!-- Visual Order Tracker -->
+    <div class="glass-card p-4 mb-4">
+        <h5 class="text-gold fs-6 text-uppercase mb-3" style="letter-spacing: 1px;">
+            <i class="bi bi-shield-check me-2"></i>Armored Logistics & Vault Progression
+        </h5>
+        <div class="order-tracker-timeline">
+            <div class="tracker-step completed">
+                <div class="tracker-step-icon"><i class="bi bi-check2"></i></div>
+                <div class="tracker-step-title">Vault Confirmed</div>
+            </div>
+            <div class="tracker-step {% if order.order_status in 'Processing,Crafting,Dispatched,Delivered' %}completed{% else %}active{% endif %}">
+                <div class="tracker-step-icon"><i class="bi bi-gem"></i></div>
+                <div class="tracker-step-title">Master Hallmarking</div>
+            </div>
+            <div class="tracker-step {% if order.order_status in 'Dispatched,Delivered' %}completed{% elif order.order_status == 'Processing' %}active{% endif %}">
+                <div class="tracker-step-icon"><i class="bi bi-truck"></i></div>
+                <div class="tracker-step-title">Armored Courier</div>
+            </div>
+            <div class="tracker-step {% if order.order_status == 'Delivered' %}completed{% endif %}">
+                <div class="tracker-step-icon"><i class="bi bi-box2-heart"></i></div>
+                <div class="tracker-step-title">White-Glove Delivered</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-5">
+        <div class="col-lg-8">
+            <div class="glass-card p-4 mb-4">
+                <h5 class="text-white fs-6 text-uppercase mb-3 pb-2 border-bottom border-secondary" style="letter-spacing: 1px;">
+                    Creations in this Order
+                </h5>
+                <div class="d-flex flex-column gap-3">
+                    {% for item in order.items.all %}
+                    <div class="d-flex align-items-center gap-3 py-2 border-bottom border-secondary border-opacity-25">
+                        <img src="{{ item.product_image_url }}" alt="{{ item.product_name }}" class="rounded" style="width: 65px; height: 65px; object-fit: cover; border: 1px solid var(--gold-border);" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800&q=80';">
+                        <div class="flex-grow-1">
+                            <div class="text-white fw-bold">{{ item.product_name }}</div>
+                            <div class="text-muted small">SKU: {{ item.product_sku }} • Size: {{ item.selected_size }} • Quantity: {{ item.quantity }}</div>
+                        </div>
+                        <div class="text-gold fw-bold">{{ item.subtotal|inr }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+
+            <!-- Shipping Details -->
+            <div class="glass-card p-4">
+                <h5 class="text-white fs-6 text-uppercase mb-3 pb-2 border-bottom border-secondary" style="letter-spacing: 1px;">
+                    Armored Delivery Vault Address
+                </h5>
+                <div class="small text-secondary">
+                    <strong class="text-white d-block mb-1">{{ order.full_name }}</strong>
+                    <div>{{ order.address_line1 }}</div>
+                    {% if order.address_line2 %}<div>{{ order.address_line2 }}</div>{% endif %}
+                    {% if order.landmark %}<div>Landmark: {{ order.landmark }}</div>{% endif %}
+                    <div>{{ order.city }}, {{ order.state }} - {{ order.pincode }}</div>
+                    <div class="mt-2"><i class="bi bi-telephone text-gold me-1"></i> {{ order.phone }}</div>
+                    <div><i class="bi bi-envelope text-gold me-1"></i> {{ order.email }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="glass-card p-4">
+                <h5 class="text-white fs-6 text-uppercase mb-3 pb-2 border-bottom border-secondary" style="letter-spacing: 1px;">
+                    Order Summary
+                </h5>
+
+                <div class="d-flex justify-content-between small text-secondary mb-2">
+                    <span>Order Status:</span>
+                    <span class="text-warning fw-bold">{{ order.get_order_status_display }}</span>
+                </div>
+                <div class="d-flex justify-content-between small text-secondary mb-2">
+                    <span>Tracking ID:</span>
+                    <span class="text-white fw-bold">{{ order.tracking_number }}</span>
+                </div>
+                <div class="d-flex justify-content-between small text-secondary mb-2">
+                    <span>Payment Method:</span>
+                    <span class="text-white">{{ order.get_payment_method_display }}</span>
+                </div>
+                <div class="d-flex justify-content-between small text-secondary mb-3 pb-3 border-bottom border-secondary">
+                    <span>Payment Status:</span>
+                    <span class="text-success fw-bold">{{ order.payment_status }}</span>
+                </div>
+
+                <div class="d-flex justify-content-between small text-secondary mb-2">
+                    <span>Subtotal:</span>
+                    <span class="text-white">{{ order.subtotal|inr }}</span>
+                </div>
+                {% if order.discount > 0 %}
+                <div class="d-flex justify-content-between small text-success mb-2">
+                    <span>Discount:</span>
+                    <span>- {{ order.discount|inr }}</span>
+                </div>
+                {% endif %}
+                <div class="d-flex justify-content-between small text-secondary mb-2">
+                    <span>GST (3%):</span>
+                    <span class="text-white">{{ order.tax_gst|inr }}</span>
+                </div>
+                <div class="d-flex justify-content-between small text-secondary mb-3">
+                    <span>Armored Transit:</span>
+                    <span class="text-gold">FREE</span>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-baseline pt-3 border-top border-secondary">
+                    <span class="text-white fw-bold">Grand Total:</span>
+                    <span class="text-gold-gradient fw-bold fs-4">{{ order.grand_total|inr }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

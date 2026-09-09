@@ -1,0 +1,212 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load aether_tags %}
+
+{% block title %}Secure Sovereign Checkout | Aether Jewels{% endblock %}
+
+{% block content %}
+<div class="py-4 bg-dark border-bottom border-secondary border-opacity-25">
+    <div class="container">
+        <h1 class="font-heading fs-2 text-white mb-0"><i class="bi bi-shield-lock text-gold me-2"></i>Sovereign Vault Checkout</h1>
+        <p class="text-secondary small mb-0 mt-1">Encrypted 256-bit checkout for high-value fine jewellery shipments across India</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <form action="{% url 'orders:checkout' %}" method="POST" id="checkoutForm">
+        {% csrf_token %}
+        <div class="row g-5">
+            <!-- Left: Client & Delivery Information -->
+            <div class="col-lg-7">
+                <!-- 1. Client Identity -->
+                <div class="glass-card p-4 mb-4">
+                    <h5 class="text-white fs-6 text-uppercase mb-3 pb-2 border-bottom border-secondary" style="letter-spacing: 1px;">
+                        <span class="text-gold me-2">01.</span> Client & Recipient Credentials
+                    </h5>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">Full Name <span class="text-danger">*</span></label>
+                            {{ form.full_name }}
+                            {% if form.full_name.errors %}<div class="text-danger small">{{ form.full_name.errors }}</div>{% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">Email (For Valuation Dossier) <span class="text-danger">*</span></label>
+                            {{ form.email }}
+                            {% if form.email.errors %}<div class="text-danger small">{{ form.email.errors }}</div>{% endif %}
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label text-secondary small">Mobile Contact (+91 10-digit number) <span class="text-danger">*</span></label>
+                            {{ form.phone }}
+                            <div class="text-muted" style="font-size: 11px;">Required for armored courier OTP authentication during delivery handoff.</div>
+                            {% if form.phone.errors %}<div class="text-danger small">{{ form.phone.errors }}</div>{% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Armored Courier Shipping Address -->
+                <div class="glass-card p-4 mb-4">
+                    <h5 class="text-white fs-6 text-uppercase mb-3 pb-2 border-bottom border-secondary" style="letter-spacing: 1px;">
+                        <span class="text-gold me-2">02.</span> Sovereign Delivery Vault Address
+                    </h5>
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label text-secondary small">Address Line 1 (Residence / Apartment / Suite) <span class="text-danger">*</span></label>
+                            {{ form.address_line1 }}
+                            {% if form.address_line1.errors %}<div class="text-danger small">{{ form.address_line1.errors }}</div>{% endif %}
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label text-secondary small">Address Line 2 (Area, Colony, Road)</label>
+                            {{ form.address_line2 }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">Prominent Landmark</label>
+                            {{ form.landmark }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">City <span class="text-danger">*</span></label>
+                            {{ form.city }}
+                            {% if form.city.errors %}<div class="text-danger small">{{ form.city.errors }}</div>{% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">State <span class="text-danger">*</span></label>
+                            {{ form.state }}
+                            {% if form.state.errors %}<div class="text-danger small">{{ form.state.errors }}</div>{% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">6-Digit PIN Code <span class="text-danger">*</span></label>
+                            {{ form.pincode }}
+                            {% if form.pincode.errors %}<div class="text-danger small">{{ form.pincode.errors }}</div>{% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Gift Note & Custom Instructions -->
+                <div class="glass-card p-4 mb-4">
+                    <h5 class="text-white fs-6 text-uppercase mb-3 pb-2 border-bottom border-secondary" style="letter-spacing: 1px;">
+                        <span class="text-gold me-2">03.</span> Bespoke Gifting & Discretion
+                    </h5>
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label text-secondary small">Complimentary Hand-Written Calligraphy Gift Note</label>
+                            {{ form.gift_message }}
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label text-secondary small">Discretion or Transit Instructions</label>
+                            {{ form.special_instructions }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Payment Gateway Selection -->
+                <div class="glass-card p-4">
+                    <h5 class="text-white fs-6 text-uppercase mb-3 pb-2 border-bottom border-secondary" style="letter-spacing: 1px;">
+                        <span class="text-gold me-2">04.</span> Select Sovereign Payment Method
+                    </h5>
+                    <div class="d-flex flex-column gap-3">
+                        <div class="p-3 rounded bg-dark border border-warning border-opacity-50">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="payment_method" id="pay_upi" value="UPI" checked>
+                                <label class="form-check-label text-white fw-bold ms-2" for="pay_upi">
+                                    <i class="bi bi-qr-code-scan text-gold me-1"></i> Instant UPI / QR / Google Pay / PhonePe
+                                </label>
+                                <div class="text-muted small ms-4">Instant authentication & zero convenience fee.</div>
+                            </div>
+                        </div>
+
+                        <div class="p-3 rounded bg-dark border border-secondary">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="payment_method" id="pay_card" value="Card">
+                                <label class="form-check-label text-white fw-bold ms-2" for="pay_card">
+                                    <i class="bi bi-credit-card-2-front text-gold me-1"></i> Luxury Metal / Black / Credit & Debit Card
+                                </label>
+                                <div class="text-muted small ms-4">Visa, Mastercard, RuPay, American Express.</div>
+                            </div>
+                        </div>
+
+                        <div class="p-3 rounded bg-dark border border-secondary">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="payment_method" id="pay_net" value="NetBanking">
+                                <label class="form-check-label text-white fw-bold ms-2" for="pay_net">
+                                    <i class="bi bi-bank text-gold me-1"></i> Priority Net Banking
+                                </label>
+                                <div class="text-muted small ms-4">HDFC, ICICI, SBI, Axis Bank Wealth Management.</div>
+                            </div>
+                        </div>
+
+                        <div class="p-3 rounded bg-dark border border-secondary">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="payment_method" id="pay_cod" value="Vault_COD">
+                                <label class="form-check-label text-white fw-bold ms-2" for="pay_cod">
+                                    <i class="bi bi-cash-stack text-gold me-1"></i> VIP Insured Delivery with Assisted Inspection
+                                </label>
+                                <div class="text-muted small ms-4">Pay securely upon doorstep inspection by certified armored courier.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Order Summary & Review -->
+            <div class="col-lg-5">
+                <div class="glass-card p-4 sticky-top" style="top: 90px;">
+                    <h5 class="text-white fs-6 text-uppercase mb-3 pb-2 border-bottom border-secondary" style="letter-spacing: 1px;">
+                        Order Creations ({{ cart.total_items }})
+                    </h5>
+
+                    <!-- Items List -->
+                    <div class="d-flex flex-column gap-3 mb-4 pb-3 border-bottom border-secondary" style="max-height: 260px; overflow-y: auto;">
+                        {% for item in cart_items %}
+                        <div class="d-flex align-items-center gap-3">
+                            <img src="{{ item.product.image_url }}" alt="{{ item.product.name }}" class="rounded" style="width: 55px; height: 55px; object-fit: cover; border: 1px solid var(--gold-border); flex-shrink: 0;">
+                            <div class="flex-grow-1 overflow-hidden">
+                                <div class="text-white small fw-bold text-truncate">{{ item.product.name }}</div>
+                                <div class="text-muted" style="font-size: 11px;">Qty: {{ item.quantity }} • Size: {{ item.selected_size }}</div>
+                            </div>
+                            <div class="text-gold small fw-bold text-nowrap">{{ item.subtotal|inr }}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Pricing breakdown -->
+                    <div class="d-flex justify-content-between text-secondary small mb-2">
+                        <span>Subtotal:</span>
+                        <span class="text-white fw-semibold">{{ cart.subtotal|inr }}</span>
+                    </div>
+
+                    {% if cart.discount > 0 %}
+                    <div class="d-flex justify-content-between text-success small mb-2">
+                        <span>Privilege Discount ({% if cart.coupon_code %}{{ cart.coupon_code }}{% endif %}):</span>
+                        <span class="fw-semibold">- {{ cart.discount|inr }}</span>
+                    </div>
+                    {% endif %}
+
+                    <div class="d-flex justify-content-between text-secondary small mb-2">
+                        <span>GST (3% Fine Jewellery):</span>
+                        <span class="text-white fw-semibold">{{ cart.tax_gst|inr }}</span>
+                    </div>
+
+                    <div class="d-flex justify-content-between text-secondary small mb-3">
+                        <span>Insured Armored Logistics:</span>
+                        <span class="text-gold fw-semibold">FREE (100% Insured)</span>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-baseline pt-3 border-top border-secondary mb-4">
+                        <span class="text-white fw-bold fs-6">Grand Total:</span>
+                        <span class="text-gold-gradient fw-bold fs-3">{{ cart.grand_total|inr }}</span>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-gold w-100 py-3 fs-6">
+                        <i class="bi bi-shield-fill-check me-2"></i> Authorize & Secure Order
+                    </button>
+
+                    <!-- Trust statement -->
+                    <div class="text-center mt-3 text-muted" style="font-size: 11px;">
+                        <i class="bi bi-lock-fill text-gold me-1"></i> Bank-grade 256-bit SSL encrypted transaction. 100% BIS Hallmarked & IGI Certified.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

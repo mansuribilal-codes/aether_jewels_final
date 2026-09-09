@@ -1,0 +1,124 @@
+<!-- Luxury Trust & Certification Bar -->
+<section class="trust-bar">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-3 col-6">
+                <div class="trust-item">
+                    <div class="trust-icon"><i class="bi bi-patch-check"></i></div>
+                    <div>
+                        <div class="trust-title">100% BIS Hallmarked</div>
+                        <div class="trust-desc">Govt. of India certified purity gold</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="trust-item">
+                    <div class="trust-icon"><i class="bi bi-gem"></i></div>
+                    <div>
+                        <div class="trust-title">IGI & GIA Certified</div>
+                        <div class="trust-desc">Natural ethically sourced diamonds</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="trust-item">
+                    <div class="trust-icon"><i class="bi bi-shield-lock"></i></div>
+                    <div>
+                        <div class="trust-title">Armored Courier</div>
+                        <div class="trust-desc">100% Insured door-to-door transit</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="trust-item">
+                    <div class="trust-icon"><i class="bi bi-arrow-repeat"></i></div>
+                    <div>
+                        <div class="trust-title">30-Day Privilege</div>
+                        <div class="trust-desc">Complimentary returns & lifetime exchange</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Footer -->
+<footer class="footer-aether">
+    <div class="container">
+        <div class="row g-5">
+            <!-- Brand & Legacy -->
+            <div class="col-lg-4 col-md-6">
+                <div class="brand-logo fs-4 text-white mb-2">AETHER<span class="text-gold">✦</span>JEWELS</div>
+                <div class="brand-sub text-gold mb-3">CELESTIAL HAUTE JOAILLERIE</div>
+                <p class="text-secondary small mb-4">
+                    Born under constellations, crafted in pure gold and cosmic solitaires. Aether Jewels merges timeless Indian heritage with transcendent celestial geometry.
+                </p>
+                <div class="d-flex gap-3 fs-5">
+                    <a href="#" class="text-secondary" title="Instagram"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-secondary" title="Facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-secondary" title="Pinterest"><i class="bi bi-pinterest"></i></a>
+                    <a href="#" class="text-secondary" title="WhatsApp VIP"><i class="bi bi-whatsapp"></i></a>
+                </div>
+            </div>
+
+            <!-- Categories -->
+            <div class="col-lg-2 col-md-6 col-6">
+                <div class="footer-heading">Collections</div>
+                <ul class="footer-links">
+                    {% for cat in nav_categories %}
+                    <li><a href="{% url 'store:product_list' %}?category={{ cat.slug }}">{{ cat.name }}</a></li>
+                    {% endfor %}
+                    <li><a href="{% url 'store:product_list' %}?category=high-solitaires">High Solitaires</a></li>
+                </ul>
+            </div>
+
+            <!-- Client Concierge -->
+            <div class="col-lg-2 col-md-6 col-6">
+                <div class="footer-heading">Concierge</div>
+                <ul class="footer-links">
+                    <li><a href="{% url 'consultations:book' %}">Private Appointment</a></li>
+                    <li><a href="{% url 'consultations:bespoke' %}">Bespoke Commission</a></li>
+                    <li><a href="{% url 'store:faq' %}">Certification & FAQ</a></li>
+                    <li><a href="{% url 'store:contact' %}">Boutique Salons</a></li>
+                    <li><a href="{% url 'accounts:profile' %}">VIP Client Portal</a></li>
+                    <li><a href="{% url 'store:developer' %}" class="text-gold"><i class="bi bi-person-badge me-1"></i> Developer</a></li>
+                </ul>
+            </div>
+
+            <!-- Flagship Boutiques in India -->
+            <div class="col-lg-4 col-md-6">
+                <div class="footer-heading">Indian Salons & Ateliers</div>
+                <div class="small text-secondary mb-3">
+                    <strong class="text-white"><i class="bi bi-geo-alt text-gold me-1"></i> Mumbai Flagship:</strong><br>
+                    Waterfield Rd, Bandra West, Mumbai 400050
+                </div>
+                <div class="small text-secondary mb-3">
+                    <strong class="text-white"><i class="bi bi-geo-alt text-gold me-1"></i> Delhi DLF Emporio:</strong><br>
+                    Nelson Mandela Marg, Vasant Kunj, New Delhi 110070
+                </div>
+                <div class="small text-secondary mb-3">
+                    <strong class="text-white"><i class="bi bi-telephone text-gold me-1"></i> Concierge Hotline:</strong><br>
+                    <a href="tel:{{ SUPPORT_PHONE }}" class="text-gold">{{ SUPPORT_PHONE }}</a> (Mon - Sun, 10 AM - 9 PM IST)
+                </div>
+            </div>
+        </div>
+
+        <hr class="border-secondary my-4" style="opacity: 0.35;">
+
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center small" style="color: #D1D1DE;">
+            <div class="mb-2 mb-md-0">
+                © {{ CURRENT_YEAR }} Aether Jewels Haute Joaillerie Private Limited. Crafted with precision by <a href="{% url 'store:developer' %}" class="text-gold text-decoration-none fw-bold" style="letter-spacing: 0.5px;">Mohammed Bilal Mansuri</a>.
+            </div>
+            <div class="d-flex flex-wrap gap-3 align-items-center">
+                <a href="{% url 'store:developer' %}" class="text-gold fw-semibold text-decoration-none"><i class="bi bi-person-badge me-1"></i>Developer Dossier</a>
+                <span style="color: rgba(212,175,55,0.4);">•</span>
+                <a href="{% url 'store:faq' %}" class="footer-bottom-link" style="color: #D1D1DE; text-decoration: none;">Privacy Policy</a>
+                <span style="color: rgba(212,175,55,0.4);">•</span>
+                <a href="{% url 'store:faq' %}" class="footer-bottom-link" style="color: #D1D1DE; text-decoration: none;">Terms of Haute Joaillerie</a>
+                <span style="color: rgba(212,175,55,0.4);">•</span>
+                <a href="{% url 'store:faq' %}" class="footer-bottom-link" style="color: #D1D1DE; text-decoration: none;">BIS Hallmarking</a>
+            </div>
+        </div>
+    </div>
+</footer>
+

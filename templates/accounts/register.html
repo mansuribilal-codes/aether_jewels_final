@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Join Aether Privilege Club | Aether Jewels{% endblock %}
+
+{% block content %}
+<div class="container py-5 my-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+            <div class="glass-card p-4 p-md-5">
+                <div class="text-center mb-4">
+                    <div class="brand-logo fs-3 text-white">AETHER<span class="text-gold">✦</span>JEWELS</div>
+                    <span class="section-subtitle mt-1">Celestial Privilege Membership</span>
+                    <p class="text-secondary small mt-2">Create your sovereign account for bespoke viewing privileges and insured vault checkout</p>
+                </div>
+
+                <form method="POST" action="{% url 'accounts:register' %}">
+                    {% csrf_token %}
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">First Name <span class="text-danger">*</span></label>
+                            {{ form.first_name }}
+                            {% if form.first_name.errors %}<div class="text-danger small">{{ form.first_name.errors }}</div>{% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">Last Name <span class="text-danger">*</span></label>
+                            {{ form.last_name }}
+                            {% if form.last_name.errors %}<div class="text-danger small">{{ form.last_name.errors }}</div>{% endif %}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">Username <span class="text-danger">*</span></label>
+                            {{ form.username }}
+                            {% if form.username.errors %}<div class="text-danger small">{{ form.username.errors }}</div>{% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">Email Address <span class="text-danger">*</span></label>
+                            {{ form.email }}
+                            {% if form.email.errors %}<div class="text-danger small">{{ form.email.errors }}</div>{% endif %}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">Mobile Phone (+91 10 digits) <span class="text-danger">*</span></label>
+                            {{ form.phone_number }}
+                            {% if form.phone_number.errors %}<div class="text-danger small">{{ form.phone_number.errors }}</div>{% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">Primary City</label>
+                            {{ form.city }}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">State</label>
+                            {{ form.state }}
+                        </div>
+                        <div class="col-md-6"></div>
+
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">Password (Min 6 characters) <span class="text-danger">*</span></label>
+                            {{ form.password }}
+                            {% if form.password.errors %}<div class="text-danger small">{{ form.password.errors }}</div>{% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">Confirm Password <span class="text-danger">*</span></label>
+                            {{ form.confirm_password }}
+                            {% if form.confirm_password.errors %}<div class="text-danger small">{{ form.confirm_password.errors }}</div>{% endif %}
+                        </div>
+
+                        <div class="col-12 mt-4">
+                            <button type="submit" class="btn btn-gold w-100 py-2">
+                                <i class="bi bi-stars me-1"></i> Register Privilege Membership
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="text-center text-muted small mt-4">
+                        Already hold an account? <a href="{% url 'accounts:login' %}" class="text-gold">Sign in here</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

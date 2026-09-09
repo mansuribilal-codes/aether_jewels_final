@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}VIP Concierge & Flagship Salons | Aether Jewels{% endblock %}
+
+{% block content %}
+<div class="py-5 bg-black border-bottom border-secondary border-opacity-25">
+    <div class="container text-center">
+        <span class="section-subtitle"><i class="bi bi-stars me-1"></i> Sovereign Concierge</span>
+        <h1 class="font-heading display-5 text-white mb-2">Connect with Our Concierge</h1>
+        <p class="text-secondary lead font-serif-sub mx-auto" style="max-width: 700px;">
+            Our dedicated Client Advisors and Senior Gemologists are at your disposal for bespoke requests, valuation questions, or private salon arrangements.
+        </p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row g-5">
+        <!-- Contact Form -->
+        <div class="col-lg-7">
+            <div class="glass-card p-4 p-md-5">
+                <h3 class="font-heading text-white fs-4 mb-4">Send a Sovereign Message</h3>
+                <form method="POST" action="{% url 'store:contact' %}">
+                    {% csrf_token %}
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">Your Name <span class="text-danger">*</span></label>
+                            {{ form.name }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">Email Address <span class="text-danger">*</span></label>
+                            {{ form.email }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">Phone Number (+91) <span class="text-danger">*</span></label>
+                            {{ form.phone }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary small">Subject / Purpose <span class="text-danger">*</span></label>
+                            {{ form.subject }}
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label text-secondary small">Your Message <span class="text-danger">*</span></label>
+                            {{ form.message }}
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-gold py-2 px-4">
+                        <i class="bi bi-send-fill me-1"></i> Transmit Message
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Boutiques List -->
+        <div class="col-lg-5">
+            <div class="glass-card p-4 mb-4">
+                <h5 class="text-white fs-6 text-uppercase mb-3 pb-2 border-bottom border-secondary" style="letter-spacing: 1px;">
+                    Indian Flagship Salons
+                </h5>
+
+                <div class="mb-4 small text-secondary">
+                    <strong class="text-gold d-block fs-6 mb-1"><i class="bi bi-geo-alt-fill me-1"></i> Mumbai Flagship Atelier</strong>
+                    Waterfield Road, Bandra West, Mumbai 400050<br>
+                    <span class="text-muted">Tel: +91 22 2640 8891 | Mon-Sun: 10:30 AM - 8:30 PM</span>
+                </div>
+
+                <div class="mb-4 small text-secondary">
+                    <strong class="text-gold d-block fs-6 mb-1"><i class="bi bi-geo-alt-fill me-1"></i> Delhi DLF Emporio Boutique</strong>
+                    Nelson Mandela Marg, Vasant Kunj, New Delhi 110070<br>
+                    <span class="text-muted">Tel: +91 11 4120 7741 | Mon-Sun: 11:00 AM - 9:00 PM</span>
+                </div>
+
+                <div class="mb-4 small text-secondary">
+                    <strong class="text-gold d-block fs-6 mb-1"><i class="bi bi-geo-alt-fill me-1"></i> Bengaluru UB City Suite</strong>
+                    Vittal Mallya Road, Bengaluru 560001<br>
+                    <span class="text-muted">Tel: +91 80 4910 2234 | Mon-Sun: 10:30 AM - 8:00 PM</span>
+                </div>
+
+                <div class="small text-secondary">
+                    <strong class="text-gold d-block fs-6 mb-1"><i class="bi bi-geo-alt-fill me-1"></i> Jaipur Heritage Salon</strong>
+                    MI Road, C-Scheme, Jaipur 302001<br>
+                    <span class="text-muted">Tel: +91 141 237 9912 | Mon-Sat: 10:30 AM - 7:30 PM</span>
+                </div>
+            </div>
+
+            <!-- Direct Contact Box -->
+            <div class="glass-card p-4 text-center">
+                <div class="text-gold fs-3 mb-2"><i class="bi bi-headset"></i></div>
+                <h5 class="text-white fs-6 mb-1">VIP Concierge Direct</h5>
+                <div class="text-gold fw-bold mb-2">{{ SUPPORT_PHONE }}</div>
+                <div class="text-muted small">Available daily for instant WhatsApp & Phone consultations.</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

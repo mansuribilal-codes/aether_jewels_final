@@ -1,0 +1,302 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load aether_tags %}
+
+{% block content %}
+<!-- Celestial Hero Section -->
+<section class="hero-celestial">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <span class="section-subtitle"><i class="bi bi-stars me-1"></i> Celestial Haute Joaillerie</span>
+                <h1 class="hero-title">
+                    Born in the Stars, <br>
+                    <span class="text-gold-gradient">Forged in Pure Gold.</span>
+                </h1>
+                <p class="hero-lead">
+                    Immerse yourself in exceptional celestial solitaire diamonds, rare unheated Burmese rubies, and royal Zambian emeralds, meticulously handcrafted in 18K and 22K gold.
+                </p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="{% url 'store:product_list' %}" class="btn btn-gold">
+                        <span>Explore Collection</span> <i class="bi bi-arrow-right"></i>
+                    </a>
+                    <a href="{% url 'consultations:book' %}" class="btn btn-gold-outline">
+                        <i class="bi bi-calendar-event"></i> <span>Private Viewing</span>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="position-relative">
+                    <div class="glass-card p-2 p-md-3">
+                        <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=1000&q=85" alt="Aether Sovereign Solitaire" class="img-fluid rounded" style="width: 100%; height: 480px; object-fit: cover;" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800&q=80';">
+                        <div class="position-absolute bottom-0 start-0 m-4 p-3 rounded" style="background: rgba(8, 8, 12, 0.85); backdrop-filter: blur(12px); border: 1px solid var(--gold-border); max-width: 320px;">
+
+                            <span class="badge-aether badge-gold mb-1">Crown Masterpiece</span>
+                            <div class="text-white fw-bold">The Nebula Empress Ring</div>
+                            <div class="text-gold small">1.85 ct VVS1 • 18K Yellow Gold</div>
+                            <div class="mt-2">
+                                <a href="{% url 'store:product_detail' 'celestial-rings' 'nebula-empress-diamond-ring' %}" class="text-gold small fw-bold">Acquire Piece <i class="bi bi-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Curated Categories -->
+<section class="section-padding bg-black">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-subtitle">Curated Haute Joaillerie</span>
+            <h2 class="section-title">Celestial Constellations</h2>
+            <div class="section-divider"></div>
+        </div>
+
+        <div class="row g-4">
+            {% for cat in featured_categories %}
+            <div class="col-lg-4 col-md-6">
+                <a href="{% url 'store:product_list' %}?category={{ cat.slug }}" class="text-decoration-none">
+                    <div class="glass-card position-relative overflow-hidden" style="height: 360px;">
+                        <img src="{{ cat.image_url }}" alt="{{ cat.name }}" class="w-100 h-100" style="object-fit: cover; transition: transform 0.6s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800&q=80';">
+                        <div class="position-absolute inset-0 w-100 h-100 top-0 start-0" style="background: linear-gradient(180deg, transparent 40%, rgba(8,8,12,0.95) 100%);"></div>
+                        <div class="position-absolute bottom-0 start-0 p-4 w-100">
+                            <h3 class="text-white fs-4 mb-1">{{ cat.name }}</h3>
+                            <p class="text-secondary small mb-2 text-truncate">{{ cat.description }}</p>
+                            <span class="text-gold small fw-semibold text-uppercase" style="letter-spacing: 1px;">Discover Pieces <i class="bi bi-arrow-right"></i></span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</section>
+
+<!-- Featured Masterpieces & Bestsellers -->
+<section class="section-padding" style="background: #0d0d12;">
+    <div class="container">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-5">
+            <div>
+                <span class="section-subtitle">Sovereign Atelier</span>
+                <h2 class="section-title mb-0">Iconic Bestsellers</h2>
+            </div>
+            <a href="{% url 'store:product_list' %}" class="btn btn-gold-outline mt-3 mt-md-0">
+                View All High Jewellery <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="row g-4">
+            {% for product in bestsellers %}
+            <div class="col-lg-3 col-md-6">
+                <div class="card-3d-wrap">
+                    <div class="product-card-3d">
+                        <div class="card-glare"></div>
+                        <div class="product-img-wrapper">
+                            <a href="{{ product.get_absolute_url }}">
+                                <img src="{{ product.image_url }}" alt="{{ product.name }}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800&q=80';">
+                            </a>
+                            <div class="product-badge-group">
+                                {% if product.is_bestseller %}
+                                <span class="badge-aether badge-bestseller">Bestseller</span>
+                                {% endif %}
+                                {% if product.discount_percent > 0 %}
+                                <span class="badge-aether badge-gold">{{ product.discount_percent }}% Off</span>
+                                {% endif %}
+                            </div>
+                            <button class="wishlist-btn-corner wishlist-toggle-btn {% if product.id in user_wishlist_ids %}active{% endif %}" data-product-id="{{ product.id }}" title="Wishlist">
+                                <i class="bi {% if product.id in user_wishlist_ids %}bi-heart-fill text-danger{% else %}bi-heart{% endif %}"></i>
+                            </button>
+                            <!-- 3D Floating Action Pills -->
+                            <div class="card-3d-actions">
+                                <button type="button" class="btn btn-3d-pill card-quickview-btn" data-product-id="{{ product.id }}">
+                                    <i class="bi bi-eye me-1"></i> Quick View
+                                </button>
+                                <button type="button" class="btn btn-3d-pill" data-bs-toggle="modal" data-bs-target="#diamond3DModal">
+                                    <i class="bi bi-badge-3d me-1"></i> 3D Inspect
+                                </button>
+                            </div>
+                        </div>
+
+
+                        <div class="product-card-body">
+                            <div class="product-category-sub">{{ product.category.name }}</div>
+                            <h4 class="product-card-title">
+                                <a href="{{ product.get_absolute_url }}" class="text-white text-decoration-none">{{ product.name }}</a>
+                            </h4>
+                            <div class="product-card-specs">
+                                <span>{{ product.metal_karat }}</span> • <span>{{ product.gemstone_type }}</span>
+                            </div>
+
+                            <div class="d-flex align-items-baseline justify-content-between mt-auto pt-3 border-top border-dark">
+                                <div>
+                                    <span class="product-card-price">{{ product.price|inr }}</span>
+                                    {% if product.original_price %}
+                                    <span class="product-card-original-price">{{ product.original_price|inr }}</span>
+                                    {% endif %}
+                                </div>
+                                <form action="{% url 'cart:add_to_cart' product.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="quantity" value="1">
+                                    <button type="submit" class="btn btn-sm btn-outline-warning border-secondary text-gold" title="Quick Add">
+                                        <i class="bi bi-bag-plus"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- High Solitaires Spotlight Banner -->
+<section class="section-padding bg-black position-relative overflow-hidden">
+    <div class="container">
+        <div class="glass-card p-4 p-md-5" style="border: 1px solid rgba(212, 175, 55, 0.4); background: radial-gradient(circle at 10% 50%, rgba(212, 175, 55, 0.1) 0%, #111116 100%);">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6">
+                    <span class="badge-aether badge-gold mb-3">Solitaire Haute Joaillerie</span>
+                    <h2 class="display-5 text-white fw-bold mb-3 font-heading">
+                        D-Flawless Certified <br>
+                        <span class="text-gold-gradient">Rare Celestial Solitaires</span>
+                    </h2>
+                    <p class="text-secondary lead font-serif-sub mb-4">
+                        Representing the apex 0.01% of global diamond yields. Every solitaire is inscribed with GIA / IGI certificates and set in pure 950 platinum or 18K yellow gold.
+                    </p>
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="{% url 'store:product_list' %}?category=high-solitaires" class="btn btn-gold">
+                            Explore Solitaires <i class="bi bi-gem"></i>
+                        </a>
+                        <a href="{% url 'consultations:bespoke' %}" class="btn btn-gold-outline">
+                            Custom Commission
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row g-3">
+                        {% for item in solitaires %}
+                        <div class="col-6">
+                            <a href="{{ item.get_absolute_url }}" class="text-decoration-none">
+                                <div class="p-2 rounded bg-dark border border-secondary text-center">
+                                    <img src="{{ item.image_url }}" alt="{{ item.name }}" class="img-fluid rounded mb-2" style="height: 140px; width: 100%; object-fit: cover;">
+                                    <div class="text-white small fw-bold text-truncate">{{ item.name }}</div>
+                                    <div class="text-gold small">{{ item.price|inr }}</div>
+                                </div>
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Private VIP Consultation Banner -->
+<section class="section-padding" style="background: #09090d;">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=1000&q=85" alt="Aether Atelier Private Viewing" class="img-fluid rounded shadow-lg" style="border: 1px solid var(--gold-border);">
+            </div>
+            <div class="col-lg-6">
+                <span class="section-subtitle">Privileged Access</span>
+                <h2 class="section-title">Book a Private Celestial Consultation</h2>
+                <p class="text-secondary mb-4">
+                    Enjoy a private suite experience with our Senior Gemologists. Available virtually or at our flagship salons in Mumbai, Delhi DLF Emporio, and Bengaluru UB City.
+                </p>
+                <div class="row g-3 mb-4">
+                    <div class="col-6">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-camera-video text-gold fs-4"></i>
+                            <span class="text-light small">Virtual HD Viewing</span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-gem text-gold fs-4"></i>
+                            <span class="text-light small">Custom Ring Sizing</span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-shield-check text-gold fs-4"></i>
+                            <span class="text-light small">GIA / IGI Direct Sourcing</span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-cup-hot text-gold fs-4"></i>
+                            <span class="text-light small">Champagne VIP Suite</span>
+                        </div>
+                    </div>
+                </div>
+                <a href="{% url 'consultations:book' %}" class="btn btn-gold">
+                    Schedule Private Appointment <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Client Testimonials -->
+<section class="section-padding bg-black">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-subtitle">Client Experiences</span>
+            <h2 class="section-title">The Sovereign Circle</h2>
+            <div class="section-divider"></div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="glass-card p-4 h-100 d-flex flex-column">
+                    <div class="text-gold mb-3">★★★★★</div>
+                    <p class="text-secondary font-serif-sub fs-5 flex-grow-1">
+                        "The Sovereign Galaxy Rivière necklace was delivered by armored courier to our residence in Mumbai within 24 hours. The brilliance under candlelight is unmatched."
+                    </p>
+                    <div class="d-flex align-items-center gap-3 mt-3 pt-3 border-top border-dark">
+                        <div>
+                            <div class="text-white fw-bold">Aarav Sharma</div>
+                            <div class="text-muted small">Altamount Road, Mumbai • Solitaire Platinum</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="glass-card p-4 h-100 d-flex flex-column">
+                    <div class="text-gold mb-3">★★★★★</div>
+                    <p class="text-secondary font-serif-sub fs-5 flex-grow-1">
+                        "We commissioned our bespoke bridal set at the Delhi Emporio Salon. The attention to celestial astrological alignments and certified Zambian emeralds exceeded our dreams."
+                    </p>
+                    <div class="d-flex align-items-center gap-3 mt-3 pt-3 border-top border-dark">
+                        <div>
+                            <div class="text-white fw-bold">Priya Singhania</div>
+                            <div class="text-muted small">Lutyens Delhi • Gold Celestial VIP</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="glass-card p-4 h-100 d-flex flex-column">
+                    <div class="text-gold mb-3">★★★★★</div>
+                    <p class="text-secondary font-serif-sub fs-5 flex-grow-1">
+                        "The Polaris Solitaire ring is a true marvel of master craftsmanship. The 950 platinum crown holds the 3-carat diamond like a floating celestial star."
+                    </p>
+                    <div class="d-flex align-items-center gap-3 mt-3 pt-3 border-top border-dark">
+                        <div>
+                            <div class="text-white fw-bold">Vikramaditya Roy</div>
+                            <div class="text-muted small">Bengaluru • Member</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

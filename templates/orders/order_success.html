@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load aether_tags %}
+
+{% block title %}Order Confirmed #{{ order.order_number }} | Aether Jewels{% endblock %}
+
+{% block content %}
+<div class="container py-5 my-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="glass-card p-4 p-md-5 text-center mb-4" style="border-color: var(--gold-primary);">
+                <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-4" style="width: 80px; height: 80px; background: rgba(212, 175, 55, 0.15); border: 2px solid var(--gold-primary);">
+                    <i class="bi bi-stars text-gold fs-1"></i>
+                </div>
+
+                <span class="section-subtitle">Order Confirmed & Secured</span>
+                <h1 class="font-heading fs-2 text-white mb-2">Thank You, {{ order.full_name }}</h1>
+                <p class="text-secondary mb-4">
+                    Your sovereign acquisition has been registered in our central vault. Order Number: <strong class="text-gold">#{{ order.order_number }}</strong>
+                </p>
+
+                <!-- Order Status Banner -->
+                <div class="p-3 rounded bg-dark border border-secondary mb-4 text-start">
+                    <div class="row g-3">
+                        <div class="col-sm-4 border-end border-secondary">
+                            <div class="text-muted small text-uppercase" style="font-size: 10px;">Order Status</div>
+                            <div class="text-warning fw-bold small"><i class="bi bi-patch-check-fill me-1"></i> {{ order.get_order_status_display }}</div>
+                        </div>
+                        <div class="col-sm-4 border-end border-secondary">
+                            <div class="text-muted small text-uppercase" style="font-size: 10px;">Armored Tracking ID</div>
+                            <div class="text-white fw-bold small">{{ order.tracking_number }}</div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="text-muted small text-uppercase" style="font-size: 10px;">Total Valuation</div>
+                            <div class="text-gold fw-bold small">{{ order.grand_total|inr }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="d-flex flex-wrap justify-content-center gap-3">
+                    <a href="{% url 'orders:order_invoice' order.order_number %}" target="_blank" class="btn btn-gold">
+                        <i class="bi bi-printer me-1"></i> View / Print Tax Invoice
+                    </a>
+                    <a href="{% url 'accounts:profile' %}" class="btn btn-gold-outline">
+                        <i class="bi bi-gem me-1"></i> Sovereign Client Portal
+                    </a>
+                    <a href="{% url 'store:home' %}" class="btn btn-dark-subtle">
+                        Return to Maison
+                    </a>
+                </div>
+            </div>
+
+            <!-- Ordered Pieces & Delivery Address Overview -->
+            <div class="glass-card p-4">
+                <h5 class="text-white fs-6 text-uppercase mb-3 pb-2 border-bottom border-secondary" style="letter-spacing: 1px;">
+                    Acquisition & Delivery Overview
+                </h5>
+
+                <div class="d-flex flex-column gap-3 mb-4">
+                    {% for item in order.items.all %}
+                    <div class="d-flex align-items-center gap-3 py-2 border-bottom border-secondary border-opacity-25">
+                        <img src="{{ item.product_image_url }}" alt="{{ item.product_name }}" class="rounded" style="width: 60px; height: 60px; object-fit: cover; border: 1px solid var(--gold-border);">
+                        <div class="flex-grow-1">
+                            <div class="text-white fw-bold small">{{ item.product_name }}</div>
+                            <div class="text-muted" style="font-size: 11px;">SKU: {{ item.product_sku }} • Size: {{ item.selected_size }} • Qty: {{ item.quantity }}</div>
+                        </div>
+                        <div class="text-gold fw-bold small">{{ item.subtotal|inr }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="row g-4 small text-secondary">
+                    <div class="col-md-6">
+                        <strong class="text-white d-block mb-1">Armored Transit Destination:</strong>
+                        <div>{{ order.address_line1 }}</div>
+                        {% if order.address_line2 %}<div>{{ order.address_line2 }}</div>{% endif %}
+                        {% if order.landmark %}<div>Landmark: {{ order.landmark }}</div>{% endif %}
+                        <div>{{ order.city }}, {{ order.state }} - {{ order.pincode }}</div>
+                        <div>Phone: {{ order.phone }}</div>
+                    </div>
+                    <div class="col-md-6">
+                        <strong class="text-white d-block mb-1">Financial & Certification Details:</strong>
+                        <div>Payment Method: {{ order.get_payment_method_display }}</div>
+                        <div>Payment Status: <span class="text-success">{{ order.payment_status }}</span></div>
+                        <div>Subtotal: {{ order.subtotal|inr }}</div>
+                        <div>GST (3%): {{ order.tax_gst|inr }}</div>
+                        <div class="text-gold fw-bold mt-1">Grand Total: {{ order.grand_total|inr }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

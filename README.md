@@ -93,37 +93,6 @@ Visit `http://127.0.0.1:8000/` in your browser.
 
 ---
 
-## Deployment Suggestions
-
-### Option A: PythonAnywhere
-1. Create a free/hacker account at [pythonanywhere.com](https://www.pythonanywhere.com).
-2. Open a Bash console and clone your repo:
-   ```bash
-   git clone <your-repo-url>
-   cd Aether_jewels_new
-   pip install -r requirements.txt
-   python manage.py migrate
-   python manage.py seed_data
-   ```
-3. In the **Web** tab, configure a manual WSGI configuration pointing to `aether_jewels/wsgi.py` and set static/media directories.
-4. Reload your web app.
-
-### Option B: Render.com
-1. Create a new **Web Service** on [render.com](https://render.com) connected to your GitHub repository.
-2. Build Command:
-   ```bash
-   pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate && python manage.py seed_data
-   ```
-3. Start Command:
-   ```bash
-   gunicorn aether_jewels.wsgi:application
-   ```
-
-### Option C: Railway.app
-1. Push repo to GitHub and connect on [railway.app](https://railway.app).
-2. Set Environment Variables (`SECRET_KEY`, `ALLOWED_HOSTS=*`).
-3. Railway automatically recognizes the `Procfile` / `requirements.txt` and deploys.
-
 ---
 
 ## Project Structure
